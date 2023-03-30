@@ -64,3 +64,5 @@ def entrada(request):
         return render(request,"registro/entrada.html",{})
     else:
         return redirect("/login/")
+    
+def
