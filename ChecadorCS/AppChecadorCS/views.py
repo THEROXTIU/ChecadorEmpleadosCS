@@ -44,14 +44,30 @@ def login(request):
 def registro(request):
     if "sesionIniciada" in request.session:
         idEmpleado = request.session["sesionIniciada"]
+        intIdEmpleado = int(idEmpleado)
         consultaEmpleado = Empleados.objects.filter(id_empleado = idEmpleado)
         for datoEmpleado in consultaEmpleado:
             nombresEmpleado = datoEmpleado.nombre
         consultaProyectos = Proyectos.objects.all()
 
+        #Consulta de empleados exceptuando al empleado que está logueqado.
+
+        consultaEmpleados = Empleados.objects.filter(correo__icontains = "@customco.com.mx", activo = "A")
+        listaEmpleados = []
+
+        for empleado in consultaEmpleados:
+            idEmpleadofor = empleado.id_empleado
+            if idEmpleadofor != intIdEmpleado:
+                apellidoEmpleado = empleado.apellidos
+                arregloApellidos = apellidoEmpleado.split(" ")
+
+                nombreEmpleado = empleado.nombre + " "+arregloApellidos[0]
+                listaEmpleados.append([idEmpleadofor, nombreEmpleado])
 
 
-        return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,})
+
+
+        return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados})
     else:
         return redirect("/login/")
 
@@ -64,5 +80,3 @@ def entrada(request):
         return render(request,"registro/entrada.html",{})
     else:
         return redirect("/login/")
-    
-def

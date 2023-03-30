@@ -5,6 +5,7 @@
 	--color-red: #fe5e41;
 	--color-button: #fdffff;
 	--color-black: #000;
+	--animate-duration: 800ms;
 }
 
 * {
@@ -302,12 +303,20 @@ footer a {
     cursor: pointer;
 }
 
-.selectProyectos {
+#selectProyectos {
 	background-color: #eee;
 	border: none;
 	padding: 12px 15px;
 	margin: 8px 0;
 	width: 100%;
+	
+}
+#selectEmpleados {
+	background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 300px!important;
 	
 }
 
@@ -352,9 +361,166 @@ footer a {
 	color: #FFFFFF;
 	font-size: 12px;
 	font-weight: bold;
-	padding: 6px 25px;
+	padding: 6px 20px;
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
     cursor: pointer;
+}
+
+/*CSS DEL SWITCH CLONADO PARA LA VISTA DE AGREGAR PERSONAL */
+.switch-button2 {
+	display: inline-block;
+}
+.switch-button2 .switch-button__checkbox2 {
+	display: none;
+}
+.switch-button2 .switch-button__label2 {
+	background-color: var(--color-red);
+	width: 3rem;
+	height: 1.5rem;
+	border-radius: 1.5rem;
+	display: inline-block;
+	position: relative;
+}
+.switch-button2 .switch-button__label2:before {
+	transition: .2s;
+	display: block;
+	position: absolute;
+	width: 1.5rem;
+	height: 1.5rem;
+	background-color: var(--color-button);
+	content: '';
+	border-radius: 50%;
+	box-shadow: inset 0px 0px 0px 1px var(--color-black);
+}
+.switch-button2 .switch-button__checkbox2:checked + .switch-button__label2 {
+	background-color: var(--color-green);
+}
+.switch-button2 .switch-button__checkbox2:checked + .switch-button__label2:before {
+	transform: translateX(1.5rem);
+}
+
+
+
+
+/*CSS DEL SWITCH CLONADO PARA LA VISTA DE AGREGAR PERSONAL EXTERNO */
+.switch-button3 {
+	display: inline-block;
+}
+.switch-button3 .switch-button__checkbox3 {
+	display: none;
+}
+.switch-button3 .switch-button__label3 {
+	background-color: var(--color-red);
+	width: 3rem;
+	height: 1.5rem;
+	border-radius: 1.5rem;
+	display: inline-block;
+	position: relative;
+}
+.switch-button3 .switch-button__label3:before {
+	transition: .2s;
+	display: block;
+	position: absolute;
+	width: 1.5rem;
+	height: 1.5rem;
+	background-color: var(--color-button);
+	content: '';
+	border-radius: 50%;
+	box-shadow: inset 0px 0px 0px 1px var(--color-black);
+}
+.switch-button3 .switch-button__checkbox3:checked + .switch-button__label3 {
+	background-color: var(--color-green);
+}
+.switch-button3 .switch-button__checkbox3:checked + .switch-button__label3:before {
+	transform: translateX(1.5rem);
+}
+
+
+
+.botonesPersonalExterno {
+	border-radius: 20px;
+	border: 1px solid black;
+	background-color: #146C94;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 6px 18px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    cursor: pointer;
+}
+
+.botonesPersonalExterno2{
+	border-radius: 20px;
+	border: 1px solid black;
+	background-color: #EB455F;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 6px 18px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    cursor: pointer;
+}
+
+#spanBotonGuardarEmpleado{
+	padding-top: 8px!important;
+}
+
+.botonGuardarEmpleados{
+	border-radius: 20px;
+	border: 1px solid black;
+	background-color: #EB455F;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 6px 18px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    cursor: pointer;
+}
+
+.botonEditarEmpleadosCustom{
+	border-radius: 20px;
+	border: 1px solid black;
+	background-color: #2B3467;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 6px 18px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    cursor: pointer;
+	text-align: center;
+}
+
+#textoContadorEmpleados{
+	font-weight: bold;
+	margin: 0;
+}
+
+#divSpanEmpleadosCustom{
+	padding-bottom: 10px!important;
+}
+
+#botonGuardarEntrada{
+	border-radius: 20px;
+	border: 1px solid black;
+	background-color: #1F8A70!important;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 6px 18px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    cursor: pointer;
+	
+
 }

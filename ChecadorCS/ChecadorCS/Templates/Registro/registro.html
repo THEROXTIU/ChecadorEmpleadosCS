@@ -43,12 +43,13 @@
           <button type="button" class="animate__animated animate__backInRight" id="botonSalida">Salida</button>
           <br>
           <br>
-          <img src={% static 'images/rayocustom.png' %} width="18"  alt="User">
+          <img src={% static 'images/rayocustom.png' %} width="18"  alt="User" class="animate__animated animate__flip">
           <br>
 
           <span>Departamento de Sistemas</span>
         </span>
         </div>
+    <!-- DIV HORAS TRABAJADAS ------------------------------------------------------------------------------- -->
         <div style="display:none" id="horasTrabajadas">
           <br>
           <br>
@@ -56,9 +57,9 @@
           
           <div id="divBotonesHora">
             <h3>Elegir hora de entrada</h3>
-            <button class="animate__animated animate__zoomIn" id="botonHoraManual" type="button" onclick="mostrarInputHoraManual()">Hora Manual</button>
+            <button class="animate__animated animate__fadeIn" id="botonHoraManual" type="button" onclick="mostrarInputHoraManual()">Hora Manual</button>
             <br><br><br>
-            <button class="animate__animated animate__zoomIn" id="btnHoraActual" type="button" onclick="mostrarDivProyecto()">Hora Actual</button>
+            <button class="animate__animated animate__fadeIn" id="btnHoraActual" type="button" onclick="mostrarDivProyecto()">Hora Actual</button>
           </div>
           
           <div id="divHoraManual">
@@ -66,10 +67,10 @@
             <input  type="time" name="horaManual" min="00:00" max="23:59">
             <br>
             <span> 
-              <button type="button" class="animate__animated animate__zoomIn botonesProyectos" onclick="mostrarDivProyecto()">Continuar</button>
+              <button type="button" class="animate__animated animate__fadeIn botonesProyectos" onclick="mostrarDivProyecto()">Continuar</button>
               &nbsp;
               &nbsp;
-              <button  class="animate__animated animate__zoomIn botonesProyectos" type="button" onclick="mostrarOpcionesHora()" >Regresar</button>
+              <button  class="animate__animated animate__fadeIn botonesProyectos" type="button" onclick="mostrarOpcionesHora()" >Regresar</button>
             </span>
           </div>  
         </div>
@@ -104,11 +105,95 @@
           </h3>
 
           <span> 
-            <button type="button" class="animate__animated animate__zoomIn botonesProyectos">Continuar</button>
+            <button  class="animate__animated animate__fadeIn botonesProyectos" type="button" onclick="mostrarDivPersonal()">Continuar</button>
             &nbsp;
             &nbsp;
-            <button  class="animate__animated animate__zoomIn botonesProyectos" type="button" onclick="ocultarProyectoMostrarOpcionesHora()" >Regresar</button>
+            <button  class="animate__animated animate__fadeIn botonesProyectos" type="button" onclick="ocultarProyectoMostrarOpcionesHora()" >Regresar</button>
           </span>
+        </div>
+
+    <!----------DIV PARA AGREGAR PERSONAL---------------------->
+        <div id="divPersonal">
+          <h3 >Asistencia de: {{nombresEmpleado}}</h3>
+          <span id="spanSwitchAgregarEmpleados">¿Deseas agregar compañer@s?
+            <h3> 
+              NO
+              <div class="switch-button2">
+                <input type="checkbox" name="switch-button" id="switch-label2" class="switch-button__checkbox2" onclick="mostrarSelectEmpleados()">
+                <label for="switch-label2" class="switch-button__label2"></label>
+              </div>
+              SI
+            </h3>
+          </span>
+          <div id="divSelectEmpleado">
+            <select id="selectEmpleados" name="state" multiple="multiple">
+              {% for empleado in listaEmpleados %}
+              <option value="{{empleado.0}}">{{empleado.1}}</option>
+              {% endfor %}
+            </select>
+            <div  id="spanBotonGuardarEmpleado">
+              <span> 
+                <button  class="animate__animated animate__fadeIn botonGuardarEmpleados" type="button" onclick="guardarEmpleados()">Terminar de agregar empleados</button>
+              </span>
+            </div>
+           
+          </div>
+          <div id="divEmpleadosYaGuardados">
+            <span id="textoContadorEmpleados"><span id="contadorEmpleadosGuardados"></span> empleados de custom</span>
+            <div id="divSpanEmpleadosCustom">
+              <span id="listadoEmpleadosCustom"></span>
+            </div>
+            
+            <center>
+              <span> 
+                <button  class="animate__animated animate__fadeIn botonEditarEmpleadosCustom" id="botonEditarEmpleadosAgregados" type="button" onclick="volverAAgregarEmpleados()">Editar empleados Custom</button>
+              </span>
+            </center>
+            
+          </div>
+
+          <span >¿Deseas agregar personal externo?
+            <h3> 
+              NO
+              <div class="switch-button3">
+                <input type="checkbox" name="switch-button" id="switch-label3" class="switch-button__checkbox3" onclick="mostrarDivPersonalExterno()">
+                <label for="switch-label3" class="switch-button__label3"></label>
+              </div>
+              SI
+            </h3>
+          </span>
+
+          <div id="divInputsDePersonalExterno">
+            <div id="divSpanNumeroPersonalExterno">
+              <span id="numeroPersonalExterno"></span>
+            </div>
+            <div id="divSpanNombresPersonalExterno">
+              <span id="stringNombresPersonalExterno"></span>
+            </div>
+            
+            <input type="text" id="nombrePersonalExterno" placeholder="Nombre.." name="usuario"/>
+            <input type="hidden" id="listaNombresPersonalExterno" value="" name="listaNombresPersonalExterno">
+            <span id="botonSoloAgregarPersonal"> 
+              <button  class="animate__animated animate__fadeIn botonesPersonalExterno" type="button" onclick="agregarUnPersonalExterno()" >Agregar</button>
+            </span>
+            <span id="divDosBotonesPersonal"> 
+              <button  class="animate__animated animate__fadeIn botonesPersonalExterno2" type="button" onclick="finalizarPersonalExterno()">Finalizar</button>
+              &nbsp;
+              &nbsp;
+              <button  class="animate__animated animate__fadeIn botonesPersonalExterno" type="button" onclick="agregarUnPersonalExterno()" >Agregar</button>
+            </span>
+          </div>
+          <br>
+          <center>
+            <span> 
+              <button type="submit"  class="animate__animated animate__fadeIn" id="botonGuardarEntrada">Guardar entrada</button>
+            </span>
+          </center>
+          
+
+
+
+          
         </div>
         
         
