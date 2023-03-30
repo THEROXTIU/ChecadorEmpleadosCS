@@ -1,0 +1,128 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Asistencia Remota</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css'>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  
+ 
+
+
+</head>
+<body>
+  <div class="container" id="container">
+    <div class="form-container sign-in-container">
+      <form action="/login/" method="POST">{% csrf_token %}
+        
+        <h1 class="animate__animated animate__slideInDown" id="horaActual"></h1>
+        <br>
+        <h1 id="fechaActual"></h1>
+        <div id="interfazBotones">
+        <br>
+        <h3 >Bienvenido, {{nombresEmpleado}}</h3>
+        <br>
+        <span>Selecciona lo que deseas registrar:</span>
+        <br>
+        <br>
+
+        <span>
+          
+          
+          <button type="button" class="animate__animated animate__backInLeft" id="botonEntrada" onclick="ocultarDivBotones()">Entrada</button>
+          &nbsp;
+          &nbsp;
+          <button type="button" class="animate__animated animate__backInRight" id="botonSalida">Salida</button>
+          <br>
+          <br>
+          <img src={% static 'images/rayocustom.png' %} width="18"  alt="User">
+          <br>
+
+          <span>Departamento de Sistemas</span>
+        </span>
+        </div>
+        <div style="display:none" id="horasTrabajadas">
+          <br>
+          <br>
+          
+          
+          <div id="divBotonesHora">
+            <h3>Elegir hora de entrada</h3>
+            <button class="animate__animated animate__zoomIn" id="botonHoraManual" type="button" onclick="mostrarInputHoraManual()">Hora Manual</button>
+            <br><br><br>
+            <button class="animate__animated animate__zoomIn" id="btnHoraActual" type="button" onclick="mostrarDivProyecto()">Hora Actual</button>
+          </div>
+          
+          <div id="divHoraManual">
+            <h3>Ingresar hora manual</h3>
+            <input  type="time" name="horaManual" min="00:00" max="23:59">
+            <br>
+            <span> 
+              <button type="button" class="animate__animated animate__zoomIn botonesProyectos" onclick="mostrarDivProyecto()">Continuar</button>
+              &nbsp;
+              &nbsp;
+              <button  class="animate__animated animate__zoomIn botonesProyectos" type="button" onclick="mostrarOpcionesHora()" >Regresar</button>
+            </span>
+          </div>  
+        </div>
+    <!--DIVR DE PROYECTOS -------------------------------------------------------------------------------------------------------------------------------------- -->
+        <div id="divProyectos">
+          
+          <div id="contenedorProyecto" class="animate__animated animate__fadeIn">
+            <br>
+            <h3 id="h3ElegirProyecto">Elegir Proyecto:</h3>
+            
+
+            <select id="selectProyectos" name="state">
+
+            {% for datoProyecto in consultaProyectos %}
+            <option value="{{datoProyecto.id_proyecto}}">#{{datoProyecto.numero_proyecto_interno}} - {{datoProyecto.nombre_proyecto}} </option>
+            {% endfor %}
+            </select>
+          </div>	
+          <div id="divSinProyecto" class="animate__animated animate__fadeIn">
+            <h3>Ingresar Motivo:</h3>
+            
+            <input type="text" placeholder="Escribir motivo" name="motivoProyecto"/>
+
+          </div>
+      
+          <h3> 
+            Sin Proyecto 
+            <div class="switch-button">
+              <input type="checkbox" name="switch-button" id="switch-label" class="switch-button__checkbox" onclick="ocultarProyectos()">
+              <label for="switch-label" class="switch-button__label"></label>
+            </div>
+          </h3>
+
+          <span> 
+            <button type="button" class="animate__animated animate__zoomIn botonesProyectos">Continuar</button>
+            &nbsp;
+            &nbsp;
+            <button  class="animate__animated animate__zoomIn botonesProyectos" type="button" onclick="ocultarProyectoMostrarOpcionesHora()" >Regresar</button>
+          </span>
+        </div>
+        
+        
+        
+          
+          
+        
+      </form>
+    </div>
+  </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> 
+<script  src={% static 'js/login.js' %}></script>
+<script src={% static 'js/registro.js' %}></script>
+
+</body>
+</html>

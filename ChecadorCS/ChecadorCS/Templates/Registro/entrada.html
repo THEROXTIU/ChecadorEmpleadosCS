@@ -1,0 +1,97 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registro de Asistencia Remoto</title>
+
+
+
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css'>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+</head>
+<body>
+  <div class="container" id="container">
+    <div class="form-container sign-in-container">
+      <form action="/login/" method="POST">{% csrf_token %}
+        
+        <br>
+        <h1 id="horaActual"></h1>
+        <br>
+        <h1 id="fechaActual"></h1>
+        
+        <br>
+        <h3>Registro Entrada</h3>
+        <br>
+        <span>Selecciona lo que deseas registrar:</span>
+        <br>
+
+        <span>
+          <form action=""></form>
+          <button id="botonEntrada">Entrada</button>
+          
+          
+          <button id="botonSalida">Salida</button>
+        
+        </span>
+
+        <br>
+        <br>
+        <br>
+        
+        <img src={% static 'images/rayocustom.png' %} width="22"  alt="User">
+        <span>Departamento de Sistemas</span>
+          
+          
+        
+      </form>
+    </div>
+  </div>
+  
+  <script  src={% static 'js/login.js' %}></script>
+
+
+    <script>
+        const mesesAnio = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
+        const fecha = new Date();
+
+        const diaSemana = diasSemana[fecha.getDay()];
+        const dia = fecha.getDate();
+        const mes = mesesAnio[fecha.getMonth()];
+        const anio = fecha.getFullYear();
+
+        const fechaHoy = `${diaSemana}, ${dia} de ${mes} de ${anio}`;
+
+        var fechaActual = document.getElementById("fechaActual");
+        var horaActual = document.getElementById("horaActual");
+        fechaActual.innerHTML = fechaHoy;
+
+
+        function mostrarHoraActual() {
+            const fecha = new Date();
+            let hora = fecha.getHours();
+            let minutos = fecha.getMinutes();
+            let segundos = fecha.getSeconds();
+
+            // Agregar un cero inicial si la hora, minutos o segundos tienen un solo dígito
+            hora = hora < 10 ? '0' + hora : hora;
+            minutos = minutos < 10 ? '0' + minutos : minutos;
+            segundos = segundos < 10 ? '0' + segundos : segundos;
+
+            const horaActualQueSeActualiza = `${hora}:${minutos}:${segundos}`;
+            horaActual.innerHTML = horaActualQueSeActualiza;
+            console.log(horaActualQueSeActualiza);
+        }
+
+        setInterval(mostrarHoraActual, 10);
+
+
+ 
+    </script>
+</body>
+</html>
