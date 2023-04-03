@@ -30,6 +30,7 @@ var divInputsDePersonalExterno = document.getElementById("divInputsDePersonalExt
 var divSpanNumeroPersonalExterno = document.getElementById("divSpanNumeroPersonalExterno");
 var divDosBotonesPersonal = document.getElementById("divDosBotonesPersonal");
 var divSpanNombresPersonalExterno = document.getElementById("divSpanNombresPersonalExterno");
+var divInputActividad = document.getElementById("divInputActividad");
 
 
 
@@ -44,6 +45,7 @@ divInputsDePersonalExterno.style.display = "none";
 divSpanNumeroPersonalExterno.style.display = "none";
 divDosBotonesPersonal.style.display = "none";
 divSpanNombresPersonalExterno.style.display = "none";
+divInputActividad.style.display = "none";
 
 function mostrarHoraActual() {
     const fecha = new Date();
@@ -272,6 +274,25 @@ function finalizarPersonalExterno(){
     divDosBotonesPersonal.style.display = "none";
 }
 
+function regresarDivProyecto(){
+    divPersonal.style.display = "none";
+    divProyectos.style.display = "block";
+
+    const textoHoraActual = document.getElementById("horaActual");
+    textoHoraActual.style.cssText = "font-size: 60px!important;";
+    const textoFechaActual = document.getElementById("fechaActual");
+    textoFechaActual.style.fontSize = "30px";
+}
+
+function mostrarDivActividad(){
+    divPersonal.style.display = "none";
+    divInputActividad.style.display = "block";
+}
+
+function regresarADivPersonal(){
+    divPersonal.style.display = "block";
+    divInputActividad.style.display = "none";
+}
 
 $(document).ready(function() {
     $('#selectEmpleados').select2();

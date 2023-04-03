@@ -13,41 +13,42 @@
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css'>
   <link rel="stylesheet" href="{% static 'css/login.css' %}">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-  
+  <link rel="icon" href={% static 'images/icons/ra.ico' %} type="image/x-icon">
  
 
 
 </head>
 <body>
   <div class="container" id="container">
-    <div class="form-container sign-in-container">
-      <form action="/login/" method="POST">{% csrf_token %}
-        
-        <h1 class="animate__animated animate__slideInDown" id="horaActual"></h1>
-        <br>
-        <h1 id="fechaActual"></h1>
-        <div id="interfazBotones">
-        <br>
-        <h3 >Bienvenido, {{nombresEmpleado}}</h3>
-        <br>
-        <span>Selecciona lo que deseas registrar:</span>
-        <br>
-        <br>
-
-        <span>
+    <!-- CONTENEDOR FORMULARIO DE ENTRADA -->
+    {% if empleadoTieneEntradaHoy == False %}
+    <form action="/registrarEntrada/" method="POST">{% csrf_token %}
+    <!-- DIV PARA REGISTRAR ENTRADA -->
+        <div class="form-container sign-in-container">
           
-          
-          <button type="button" class="animate__animated animate__backInLeft" id="botonEntrada" onclick="ocultarDivBotones()">Entrada</button>
-          &nbsp;
-          &nbsp;
-          <button type="button" class="animate__animated animate__backInRight" id="botonSalida">Salida</button>
-          <br>
-          <br>
-          <img src={% static 'images/rayocustom.png' %} width="18"  alt="User" class="animate__animated animate__flip">
-          <br>
+            
+            <h1 class="animate__animated animate__slideInDown" id="horaActual"></h1>
+            <br>
+            <h1 id="fechaActual"></h1>
+            <div id="interfazBotones">
+            <br>
+            <h3 >Bienvenido, {{nombresEmpleado}}</h3>
+            <br>
+            <span>Selecciona lo que deseas registrar:</span>
+            <br>
+            <br>
 
-          <span>Departamento de Sistemas</span>
-        </span>
+            <span>
+              
+              
+              <button type="button" class="animate__animated animate__bounceInUp" id="botonEntrada" onclick="ocultarDivBotones()">Entrada</button>
+              <br>
+              <br>
+              <img src={% static 'images/rayocustom.png' %} width="18"  alt="User" class="animate__animated animate__flip">
+              <br>
+
+              <span>Departamento de Sistemas</span>
+            </span>
         </div>
     <!-- DIV HORAS TRABAJADAS ------------------------------------------------------------------------------- -->
         <div style="display:none" id="horasTrabajadas">
@@ -64,7 +65,7 @@
           
           <div id="divHoraManual">
             <h3>Ingresar hora manual</h3>
-            <input  type="time" name="horaManual" min="00:00" max="23:59">
+            <input  type="time" name="horaManualInput" min="00:00" max="23:59">
             <br>
             <span> 
               <button type="button" class="animate__animated animate__fadeIn botonesProyectos" onclick="mostrarDivProyecto()">Continuar</button>
@@ -82,7 +83,7 @@
             <h3 id="h3ElegirProyecto">Elegir Proyecto:</h3>
             
 
-            <select id="selectProyectos" name="state">
+            <select id="selectProyectos" name="proyectoElegidoSelect">
 
             {% for datoProyecto in consultaProyectos %}
             <option value="{{datoProyecto.id_proyecto}}">#{{datoProyecto.numero_proyecto_interno}} - {{datoProyecto.nombre_proyecto}} </option>
@@ -92,14 +93,14 @@
           <div id="divSinProyecto" class="animate__animated animate__fadeIn">
             <h3>Ingresar Motivo:</h3>
             
-            <input type="text" placeholder="Escribir motivo" name="motivoProyecto"/>
+            <input type="text" placeholder="Escribir motivo" name="motivoProyectoInput"/>
 
           </div>
       
           <h3> 
             Sin Proyecto 
             <div class="switch-button">
-              <input type="checkbox" name="switch-button" id="switch-label" class="switch-button__checkbox" onclick="ocultarProyectos()">
+              <input type="checkbox" name="switchProyecto" id="switch-label" class="switch-button__checkbox" onclick="ocultarProyectos()">
               <label for="switch-label" class="switch-button__label"></label>
             </div>
           </h3>
@@ -111,22 +112,21 @@
             <button  class="animate__animated animate__fadeIn botonesProyectos" type="button" onclick="ocultarProyectoMostrarOpcionesHora()" >Regresar</button>
           </span>
         </div>
-
-    <!----------DIV PARA AGREGAR PERSONAL---------------------->
+    <!---------- DIV PARA AGREGAR PERSONAL---------------------->
         <div id="divPersonal">
           <h3 >Asistencia de: {{nombresEmpleado}}</h3>
           <span id="spanSwitchAgregarEmpleados">¿Deseas agregar compañer@s?
             <h3> 
               NO
               <div class="switch-button2">
-                <input type="checkbox" name="switch-button" id="switch-label2" class="switch-button__checkbox2" onclick="mostrarSelectEmpleados()">
+                <input type="checkbox" name="switchMasCompaneros" id="switch-label2" class="switch-button__checkbox2" onclick="mostrarSelectEmpleados()">
                 <label for="switch-label2" class="switch-button__label2"></label>
               </div>
               SI
             </h3>
           </span>
           <div id="divSelectEmpleado">
-            <select id="selectEmpleados" name="state" multiple="multiple">
+            <select id="selectEmpleados" name="listaEmpleadosExtras" multiple="multiple">
               {% for empleado in listaEmpleados %}
               <option value="{{empleado.0}}">{{empleado.1}}</option>
               {% endfor %}
@@ -156,7 +156,7 @@
             <h3> 
               NO
               <div class="switch-button3">
-                <input type="checkbox" name="switch-button" id="switch-label3" class="switch-button__checkbox3" onclick="mostrarDivPersonalExterno()">
+                <input type="checkbox" name="switchMasCompaneros" id="switch-label3" class="switch-button__checkbox3" onclick="mostrarDivPersonalExterno()">
                 <label for="switch-label3" class="switch-button__label3"></label>
               </div>
               SI
@@ -172,7 +172,7 @@
             </div>
             
             <input type="text" id="nombrePersonalExterno" placeholder="Nombre.." name="usuario"/>
-            <input type="hidden" id="listaNombresPersonalExterno" value="" name="listaNombresPersonalExterno">
+            <input type="hidden" id="listaNombresPersonalExterno" name="listaNombresPersonalExterno" value="" name="listaNombresPersonalExterno">
             <span id="botonSoloAgregarPersonal"> 
               <button  class="animate__animated animate__fadeIn botonesPersonalExterno" type="button" onclick="agregarUnPersonalExterno()" >Agregar</button>
             </span>
@@ -186,7 +186,10 @@
           <br>
           <center>
             <span> 
-              <button type="submit"  class="animate__animated animate__fadeIn" id="botonGuardarEntrada">Guardar entrada</button>
+              <button type="button" class="animate__animated animate__fadeIn botonesProyectos" onclick="mostrarDivActividad()">Continuar</button>
+              &nbsp;
+              &nbsp;
+              <button  class="animate__animated animate__fadeIn botonesProyectos" type="button" onclick="regresarDivProyecto()" >Regresar</button>
             </span>
           </center>
           
@@ -195,19 +198,146 @@
 
           
         </div>
+
+        <div id="divInputActividad">
+          <h3>Actividad a Realizar:</h3>
+          <input type="text" name="actividadARealizar" required maxlength="255">
+          <br><br>
+          <center>
+            <span> 
+              <button type="button"  class="animate__animated animate__fadeIn botonesProyectos"  onclick="regresarADivPersonal()">Regresar</button>
+            </span>
+          </center>
+          <br>
+
+          <center>
+            <span> 
+              <button type="submit"  class="animate__animated animate__fadeIn" id="botonGuardarEntrada">Guardar Entrada</button>
+            </span>
+          </center>
+        </div>
+    </form>
+    {% endif %}
+
+    {% if empleadoTieneEntradaHoy %}
+      <div class="form-container sign-in-container">
+        <center>
+          <h1 class="animate__animated animate__slideInDown" id="horaActual"></h1>
+          <br>
+          <h1 id="fechaActual"></h1>
+          <div id="interfazBotones">
+            <br>
+            <h3>Hola, {{nombresEmpleado}}!</h3>
+            <br>
+            <span>Registraste entrada a las <span style="font-weight: bold;">{{horaEntrada}} horas.</span></span>
+            <br>
+            <span>Proyecto <span style="font-weight: bold;">{{proyecto}}</span></span>
+            <br>
+            <br>
+            <div class="tooltip">Lista de empleados
+              <span class="tooltiptext">
+                {% for empleado in listaEmpleadosConLaMismaAsistencia %}
+                {{empleado}}<br>
+                {% endfor %}
+              </span>
+            </div>
+            <br>
+            <br>
+            <span> 
+              <button type="submit"  class="animate__animated animate__fadeIn botonesSiguientes" onclick="mostrarDivReportarActividad()">Reportar<br> Actividad</button>
+              &nbsp;
+              &nbsp;
+              <button type="submit"  class="animate__animated animate__fadeIn botonesSiguientes" id="botonesSiguiente1">Agregar<br> personal</button>
+            </span>
+            <br>
+            <br>
+            <span> 
+              <button type="submit"  class="animate__animated animate__fadeIn botonSalida">REPORTAR SALIDA</button>
+            </span>
+          </div>
+
+
+
+
+          <div id="divIngresarActividad">
+            <br>
+            <h3>Agregar actividad</h3>
+            <br>
+            <form action="/reportarActividadEmpleado/" method="POST">{% csrf_token %}
+              <input type="text" name="activiadReportada" required maxlength="255">
+              <br><br>
+              <center>
+                <span> 
+                  <button type="button"  class="animate__animated animate__fadeIn botonesProyectos"  onclick="regresarDivBotones()">Regresar</button>
+                </span>
+              </center>
+              <br>
+
+              <center>
+                <span> 
+                  <button type="submit"  class="animate__animated animate__fadeIn" >Guardar Actividad</button>
+                </span>
+              </center>
+            </form>
+          </div>
+        </center>
         
-        
-        
-          
-          
-        
-      </form>
-    </div>
+      </div>
+    {% endif %}
   </div>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+{% if entradaRegistradaCorrectamente %}
+<script type="text/javascript">
+  swal({
+      icon: 'success',
+      title: 'Enhorabuena!!',
+      text: ' {{entradaRegistradaCorrectamente}}',
+      footer: '<span style="color: green!important"> Vuelve a navegar por Custom System! </span>',
+      width: '40%',
+      timer: 4000,
+  });
+</script>
+{% endif %}
+
+{% if errorEnEntrada %}
+<script type="text/javascript">
+  swal({
+      icon: 'error',
+      title: 'Upss!!',
+      text: ' {{errorEnEntrada}}',
+      footer: '<span style="color: green!important"> Vuelve a navegar por Custom System! </span>',
+      width: '40%',
+      timer: 4000,
+  });
+</script>
+{% endif %}
+
+{% if actividadAgregada %}
+<script type="text/javascript">
+  swal({
+      icon: 'success',
+      title: 'Enhorabuena!!',
+      text: ' {{actividadAgregada}}',
+      footer: '<span style="color: green!important"> Vuelve a navegar por Custom System! </span>',
+      width: '40%',
+      timer: 4000,
+  });
+</script>
+{% endif %}
+
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> 
 <script  src={% static 'js/login.js' %}></script>
+
+{% if empleadoTieneEntradaHoy == False %}
 <script src={% static 'js/registro.js' %}></script>
+{% endif %}
+
+{% if empleadoTieneEntradaHoy %}
+<script src={% static 'js/registro2.js' %}></script>
+{% endif %}
 
 </body>
 </html>

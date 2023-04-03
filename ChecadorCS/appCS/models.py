@@ -741,13 +741,14 @@ class AsistenciaProyectoForaneo(models.Model):
     id_asistencia_proyecto_foraneo = models.AutoField(primary_key=True)
     id_empleado = models.ForeignKey(Empleados, on_delete= CASCADE, null = True)
     personal_externo = models.CharField(max_length=255, null=True)
-    fecha = models.DateField(null = True)
+    fecha_entrada = models.DateField(null = True)
     hora_entrada = models.CharField(max_length=8, null = True)
+    fecha_salida = models.DateField(null = True)
     hora_salida = models.CharField(max_length=8, null = True)
     proyecto_interno = models.ForeignKey(Proyectos, on_delete= CASCADE, null = True)
     motivo = models.CharField(max_length=255, null = True)
+    actividad_realizada = models.CharField(max_length=255, null = True)
     actividades_realizadas = models.CharField(max_length=255, null = True)
-    salida_siguiente_dia = models.CharField(max_length=2, null = True)
 
     def __str__(self):
         return str(self.id_asistencia_proyecto_foraneo)
