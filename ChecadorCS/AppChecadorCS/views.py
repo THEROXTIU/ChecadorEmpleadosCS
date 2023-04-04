@@ -147,7 +147,7 @@ def registro(request):
             
         
         
-
+        #Si se registra la entrada correctamente
         if "entradaRegistradaCorrectamente" in request.session:
             entradaRegistradaCorrectamente = request.session["entradaRegistradaCorrectamente"]
             del request.session["entradaRegistradaCorrectamente"]
@@ -156,6 +156,7 @@ def registro(request):
                                                             "entradaRegistradaCorrectamente":entradaRegistradaCorrectamente, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                             "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto,"listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia})
         
+        #Si hay un error al registrar la entrada
         if "errorEnEntrada" in request.session:
             errorEnEntrada = request.session["errorEnEntrada"]
             del request.session["errorEnEntrada"]
@@ -163,10 +164,48 @@ def registro(request):
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados,
                                                             "errorEnEntrada":errorEnEntrada, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                             "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia})
-
-
+        #Si se añadieron los empleados correctamente
+        if "empleadosAñadidosCorrectamente" in request.session:
+            empleadosAñadidosCorrectamente = request.session["empleadosAñadidosCorrectamente"]
+            del request.session["empleadosAñadidosCorrectamente"]
+            
+            return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
+                                                        "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
+                                                        "empleadosAñadidosCorrectamente":empleadosAñadidosCorrectamente})
+            
+            
+        #Si hay un error al añadir empleados
+        if "errorAñadirEmpleados" in request.session:
+            errorAñadirEmpleados = request.session["errorAñadirEmpleados"]
+            del request.session["errorAñadirEmpleados"]
+            
+            return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
+                                                        "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
+                                                        "errorAñadirEmpleados":errorAñadirEmpleados})
+            
+        if "salidaRegistradaCorrectamente" in request.session:
+            salidaRegistradaCorrectamente = request.session["salidaRegistradaCorrectamente"]
+            del request.session["salidaRegistradaCorrectamente"]
+            
+            return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
+                                                        "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
+                                                        "salidaRegistradaCorrectamente":salidaRegistradaCorrectamente}) 
+           
+        
+        if "errorEnSalida" in request.session:
+            errorEnSalida = request.session["errorEnSalida"]
+            del request.session["errorEnSalida"]
+            
+            return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
+                                                        "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
+                                                        "errorEnSalida":errorEnSalida})
+            
+            
+            
+            
         return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                         "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia})
+        
     else:
         return redirect("/login/")
 
@@ -410,6 +449,278 @@ def reportarActividadEmpleado(request):
         except:
             print("An exception occurred")
         
+        
+        
+        
+        
+        
+    else:
+        return redirect("/login/")
+    
+    
+def agregarPersonalAAsistencia(request):
+    if "sesionIniciada" in request.session:
+        idEmpleadoPrincipal = request.session["sesionIniciada"]
+        
+        consultaEmpleadoQueRegistro = Empleados.objects.filter(id_empleado = idEmpleadoPrincipal)
+        for datoEmpleado in consultaEmpleadoQueRegistro:
+            nombreCompletoEmpleado = datoEmpleado.nombre + " " + datoEmpleado.apellidos
+            
+        
+        
+        #Obtener lista de select
+        listaEmpleadosExtras = request.POST.getlist('listaEmpleadosExtras') #Puede ser vacio o no..
+        
+        #Obtener lista de empleados
+        listaNombresPersonalExterno = request.POST["listaNombresPersonalExterno"] #Puuese estar vacio o no..
+        
+        #Actividad realizada
+        actividadRealizada = request.POST["actividadRealizada"]
+        
+        fechaAsistencia = datetime.now()
+        horaEntrada = datetime.now().time()
+        horaEntrada = horaEntrada.strftime("%H:%M:%S")
+        
+        #Consulta de la asistencia del empleado
+        consultaAsistenciaEmpleado = AsistenciaProyectoForaneo.objects.filter(id_empleado_id = idEmpleadoPrincipal, fecha_entrada = fechaAsistencia)
+        for datoConsulta in consultaAsistenciaEmpleado:
+            proyecto = datoConsulta.proyecto_interno_id
+            motivo = datoConsulta.motivo
+        
+        conProyectoInterno = False
+        if proyecto == None:
+            conProyectoInterno = False
+        else:
+            conProyectoInterno = True
+        
+        
+        listaEmpleadosTelegram = []
+        
+        empleadosRegistroEntrada = []
+        
+        if len(listaEmpleadosExtras) > 0:
+            #Si se selecciono un empleado customita extra
+            for empleadoExtra in listaEmpleadosExtras:
+                idEmpleadoExtra = int(empleadoExtra)
+                empleadosRegistroEntrada.append(idEmpleadoExtra)
+                
+        try:      
+            #De todos los empleados de custom
+            for empleado in empleadosRegistroEntrada:
+                idEmpleado = empleado
+                
+                consultaEmpleado = Empleados.objects.filter(id_empleado = idEmpleado)
+                for datoEmpleado in consultaEmpleado:
+                    nombreEmpleado = datoEmpleado.nombre + " " +datoEmpleado.apellidos
+                    
+                listaEmpleadosTelegram.append(nombreEmpleado)
+                
+
+                if conProyectoInterno:
+                    
+                    registroAsistencia = AsistenciaProyectoForaneo(id_empleado = Empleados.objects.get(id_empleado = idEmpleado),
+                                                                    personal_externo = "",
+                                                                    fecha_entrada = fechaAsistencia, 
+                                                                    hora_entrada = horaEntrada,
+                                                                    hora_salida = "", 
+                                                                    proyecto_interno = Proyectos.objects.get(id_proyecto = proyecto),
+                                                                    motivo = "",
+                                                                    actividad_realizada = actividadRealizada,
+                                                                    actividades_realizadas = "")
+                else:
+                    registroAsistencia = AsistenciaProyectoForaneo(id_empleado = Empleados.objects.get(id_empleado = idEmpleado),
+                                                                    personal_externo = "",
+                                                                    fecha_entrada = fechaAsistencia, 
+                                                                    hora_entrada = horaEntrada,
+                                                                    hora_salida = "", 
+                                                                    motivo = motivo,
+                                                                    actividad_realizada = actividadRealizada,
+                                                                    actividades_realizadas = "")
+
+                registroAsistencia.save() #Se guarda la asistencia del empleado
+                
+                #AUN NO SE CALCULARÁN LAS HORAS EXTRAS, YA HASTA LA SALIDA..
+
+            #De todo el personal externo
+            if listaNombresPersonalExterno != "":
+                arregloListaNombresPersonalExterno = listaNombresPersonalExterno.split(",")
+                
+                for personaExterna in arregloListaNombresPersonalExterno:
+                    nombrePersonaExterna = personaExterna
+                    
+                    listaEmpleadosTelegram.append("Personal externo: "+nombrePersonaExterna)
+                    
+
+                    if conProyectoInterno:
+                    
+                        registroAsistencia = AsistenciaProyectoForaneo(personal_externo = nombrePersonaExterna,
+                                                                        fecha_entrada = fechaAsistencia, 
+                                                                        hora_entrada = horaEntrada,
+                                                                        hora_salida = "", 
+                                                                        proyecto_interno = Proyectos.objects.get(id_proyecto = proyecto),
+                                                                        motivo = "",
+                                                                        actividad_realizada = actividadRealizada,
+                                                                        actividades_realizadas = "")
+                    else:
+                        registroAsistencia = AsistenciaProyectoForaneo(personal_externo = nombrePersonaExterna,
+                                                                        fecha_entrada = fechaAsistencia, 
+                                                                        hora_entrada = horaEntrada,
+                                                                        hora_salida = "", 
+                                                                        motivo = motivo,
+                                                                        actividad_realizada = actividadRealizada,
+                                                                        actividades_realizadas = "")
+                    
+
+                    registroAsistencia.save() #Guardar registro de asistencia de personal externo sin horas extras de entrada..
+            
+            #Todo bien!
+            request.session["empleadosAñadidosCorrectamente"] = "Se añadieron los empleados correctamente!"
+            
+            #NOTIFICAR POR TELEGRAM
+            #Mandar notificación de telegram
+            try:
+                tokenTelegram = keysBotAsistencia.tokenBotAsistencia
+                botCustom = telepot.Bot(tokenTelegram)
+
+                idGrupoTelegram = keysBotAsistencia.idGrupoAsistencia
+
+                if conProyectoInterno:
+                    consultaProyecto = Proyectos.objects.filter(id_proyecto = proyecto)
+                    for datoProyecto in consultaProyecto:
+                        nombreProyecto = "#"+datoProyecto.numero_proyecto_interno + " - "+datoProyecto.nombre_proyecto
+                        
+                    stringNombresEmpleados = ""
+                    contadorEmpleados = 0
+                    
+                    for empleado in listaEmpleadosTelegram:
+                        contadorEmpleados = contadorEmpleados +1
+                        
+                        if contadorEmpleados == 1:
+                            stringNombresEmpleados = empleado + "\n"
+                        else:
+                            stringNombresEmpleados = stringNombresEmpleados+ empleado + " \n"
+                    
+                    mensaje = "\U0001F477 INCORPORACIÓN DE PERSONAL \U0001F477 \n Agregados por: "+nombreCompletoEmpleado+"\nProyecto: "+nombreProyecto+" \U0001F4BC \n \n "+stringNombresEmpleados+"\n"+"Actividad realizada: "+actividadRealizada
+                else:
+                    mensaje = "\U0001F477 INCORPORACIÓN DE PERSONAL \U0001F477 \n Agregados por: "+nombreCompletoEmpleado+"\nSin proyecto, actividad: "+motivo+" \U0001F4BC \n \n "+stringNombresEmpleados+"\n"+"Actividad realizada: "+actividadRealizada
+                
+                
+                botCustom.sendMessage(idGrupoTelegram,mensaje)
+            except:
+                print("An exception occurred")
+            
+            return redirect("/registro/")
+        except:
+            request.session["errorAñadirEmpleados"] = "Error al añadir empleado! Consultar a soporte!"
+            return redirect("/registro/")
+        
+        
+        
+    else:
+        return redirect("/login/")
+    
+    
+def registrarSalida(request):
+    if "sesionIniciada" in request.session:
+        try:
+            idEmpleadoPrincipal = request.session["sesionIniciada"]
+            
+            horaManualInput = request.POST["horaManualInput"] #Puuede estar vacio o no..
+            fechaAsistencia = datetime.now()
+            
+            if horaManualInput == "":
+                horaSalida = datetime.now().time()
+                horaSalida = horaSalida.strftime("%H:%M:%S")
+            else:
+                horaSalida = horaManualInput
+
+            actividadesRealizadas = request.POST["actividadesRealizadas"] 
+            consultaAsistenciaEmpleado = AsistenciaProyectoForaneo.objects.filter(id_empleado_id = idEmpleadoPrincipal, fecha_salida__isnull = True)
+
+            for datoAsistencia in consultaAsistenciaEmpleado:
+                proyectoInterno = datoAsistencia.proyecto_interno    #O puede tener un id de proyecto o es None
+                motivo = datoAsistencia.motivo   #O puede tener uun motivo o es ""
+                fechaEntrada = datoAsistencia.fecha_entrada
+
+            conProyecto = False   
+            if proyectoInterno == None:
+                conProyecto = True
+            if conProyecto:
+                consultaAsistenciaEmpleadosIguales = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, fecha_salida__isnull = True, proyecto_interno_id = proyectoInterno)
+                
+            else: 
+                consultaAsistenciaEmpleadosIguales = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, motivo = motivo,fecha_salida__isnull = True)
+                
+            listaEmpleadosTelegram = []
+            for asistencia in consultaAsistenciaEmpleadosIguales:
+                idEmpleado = asistencia.id_empleado_id
+                if idEmpleado == None:
+                    personalExterno = asistencia.personal_externo
+                    listaEmpleadosTelegram.append("Personal externo: "+personalExterno)
+                    
+                    if conProyecto:
+                        actualizacionSalida = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, fecha_salida__isnull = True, proyecto_interno_id = proyectoInterno, personal_externo = personalExterno).update(fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
+                    else: 
+                        actualizacionSalida = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, motivo = motivo,fecha_salida__isnull = True, personal_externo = personalExterno).update(fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
+                else:
+                    
+                    consultaEmpleado = Empleados.objects.filter(id_empleado = idEmpleado)
+                    for datoEmpleado in consultaEmpleado:
+                        nombreEmpleado = datoEmpleado.nombre + " "+datoEmpleado.apellidos
+                    listaEmpleadosTelegram.append(nombreEmpleado)
+                        
+                    if conProyecto:
+                        actualizacionSalida = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, fecha_salida__isnull = True, proyecto_interno_id = proyectoInterno, id_empleado_id = idEmpleado).update(fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
+                    else: 
+                        actualizacionSalida = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, motivo = motivo,fecha_salida__isnull = True, id_empleado_id = idEmpleado).update(fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
+            
+            #Todo bien!
+            request.session["salidaRegistradaCorrectamente"] = "Salida registrada correctamente!"
+            
+            #NOTIFICAR POR TELEGRAM
+            #Mandar notificación de telegram
+            try:
+                tokenTelegram = keysBotAsistencia.tokenBotAsistencia
+                botCustom = telepot.Bot(tokenTelegram)
+
+                idGrupoTelegram = keysBotAsistencia.idGrupoAsistencia
+
+                if conProyecto:
+                    consultaProyecto = Proyectos.objects.filter(id_proyecto = proyectoInterno)
+                    for datoProyecto in consultaProyecto:
+                        nombreProyecto = datoProyecto.nombre_proyecto
+                        
+                    stringNombresEmpleados = ""
+                    contadorEmpleados = 0
+                    
+                    for empleado in listaEmpleadosTelegram:
+                        contadorEmpleados = contadorEmpleados +1
+                        
+                        if contadorEmpleados == 1:
+                            stringNombresEmpleados = empleado + "\n"
+                        else:
+                            stringNombresEmpleados = stringNombresEmpleados+ empleado + " \n"
+                    
+                    mensaje = "\U0001F6A9 SALIDA REGISTRADA \U0001F6A9 \n Proyecto: "+nombreProyecto+" \U0001F4BC \n \n "+stringNombresEmpleados+"\n"+"Actividades realizadas: "+actividadesRealizadas
+                else:
+                    mensaje = "\U0001F6A9 SALIDA REGISTRADA \U0001F6A9 \n Sin proyecto, actividad: "+motivo+" \U0001F4BC \n \n "+stringNombresEmpleados+"\n"+"Actividades realizadas: "+actividadesRealizadas
+                
+                
+                botCustom.sendMessage(idGrupoTelegram,mensaje)
+            except:
+                print("An exception occurred")
+
+            return redirect("/registro/")
+        except Exception as e:
+            request.session["errorEnSalida"] = "Error en salida! Consultar a soporte!"
+            print("Ha ocurrido una excepción:", e)
+            return redirect("/registro/")
+
+                
+                
+
+        
+            
         
         
         

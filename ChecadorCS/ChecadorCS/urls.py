@@ -26,7 +26,9 @@ urlpatterns = [
     path('login/', views.login),
     path("salir/", views.salir),
     path('registrarEntrada/',views.registrarEntrada),
-    path('reportarActividadEmpleado/',views.reportarActividadEmpleado)
+    path("registrarSalida/", views.registrarSalida),
+    path('reportarActividadEmpleado/',views.reportarActividadEmpleado),
+    path("agregarPersonalAAsistencia/", views.agregarPersonalAAsistencia)
     
 ]
 

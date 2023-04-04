@@ -368,6 +368,20 @@ footer a {
     cursor: pointer;
 }
 
+.botonSalida2 {
+	border-radius: 20px;
+	border: 1px solid #000000;
+	background-color: #3336c7;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 5px 14px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    cursor: pointer;
+}
+
 /*CSS DEL SWITCH CLONADO PARA LA VISTA DE AGREGAR PERSONAL */
 .switch-button2 {
 	display: inline-block;
@@ -526,35 +540,6 @@ footer a {
 }
 
 
-.tooltip {
-	position: relative;
-	display: inline-block;
-	border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-}
-
-/* Tooltip text */
-.tooltip .tooltiptext {
-	visibility: hidden;
-	width: 120px;
-	background-color: black;
-	color: #fff;
-	text-align: center;
-	padding: 5px 0;
-	border-radius: 6px;
-
-	/* Position the tooltip text - see examples below! */
-	position: absolute;
-	z-index: 1;
-	width: 210px;
-	top: 100%;
-	left: 25%;
-	margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-	visibility: visible;
-}
 
 .botonesSiguientes{
 	border-radius: 20px;
@@ -587,3 +572,38 @@ footer a {
 	transition: transform 80ms ease-in;
     cursor: pointer;
 }
+
+
+
+
+.tooltip {
+	position: relative;
+	border-bottom: 1px dotted black;
+  }
+  .tooltip span {
+	visibility: hidden;
+	width: 20em;
+	background-color: #000000;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
+	position: absolute;
+	z-index: 9;
+	top: 2em;
+	right: -55%;
+	margin-left:1em;
+	opacity: 0;
+	transition: opacity 1s;
+  }
+  .tooltip input {
+	display:none;
+  }
+  .tooltip input:checked+span {
+	visibility: visible;
+	opacity: 1;
+  }
+
+  #botonAgregarPersonal{
+	background-color: #54B435!important;
+  }
