@@ -78,6 +78,16 @@ def registro(request):
         empleadoTieneEntradaHoy = False
         empleadoTieneSalidaHoy = False
         
+        #Datos de asistencia
+        fechaAsistenciaMostrar = ""
+        horaAsistenciaMostrar = ""
+        proyectoMotivoMostrar = ""
+        actividadesRealizadas = ""
+        fechaSalidaMostrar = ""
+        horaSalidaMostrar = ""
+        
+    
+        
         horaEntrada = ""
         proyecto = ""
         listaEmpleadosConLaMismaAsistencia = []
@@ -85,6 +95,16 @@ def registro(request):
         if consultaEntrada:
             empleadoTieneEntradaHoy = True #Si tiene una entrada
             for datosConsultaEntrada in consultaEntrada:
+                
+                #DATOS PARA INTERFAZ FINAL..
+                fechaAsistenciaMostrar = datosConsultaEntrada.fecha_entrada
+                horaAsistenciaMostrar = datosConsultaEntrada.hora_entrada
+                
+                
+                
+                #AQUI TERMINA
+                
+                
                 fechaSalida = datosConsultaEntrada.fecha_salida
                 
                 horaEntrada = datosConsultaEntrada.hora_entrada
@@ -92,6 +112,7 @@ def registro(request):
                 
                 if proyecto == None:
                     proyecto = datosConsultaEntrada.motivo
+                    proyectoMotivoMostrar = proyecto
                     
                     #Ver todos los empleados con esa misma asistencia en el proyecto o tarea
                     consultaEmpleadosConLaMismaAsistencia = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, motivo = proyecto)
@@ -103,6 +124,7 @@ def registro(request):
                     
                     for datoProyecto in consultaProyecto:
                         proyecto = "#"+datoProyecto.numero_proyecto_interno + " - "+datoProyecto.nombre_proyecto
+                    proyectoMotivoMostrar = proyecto
                         
                    
                 
@@ -123,19 +145,24 @@ def registro(request):
                         listaEmpleadosConLaMismaAsistencia.append(nombreCompletoEmpleadoConLaMisma)
                     
                         
-                        
-                    
-                    
+                if fechaSalida == None:
+                    empleadoTieneSalidaHoy = False
+                else:
+                    empleadoTieneSalidaHoy = True
+                    actividadesRealizadas = datosConsultaEntrada.actividades_realizadas
+                    fechaSalidaMostrar = fechaSalida
+                    horaSalidaMostrar = datosConsultaEntrada.hora_salida
                 
-            if fechaSalida == None:
-                empleadoTieneSalidaHoy = False
-            else:
-                empleadoTieneSalidaHoy = True
+                
+            
                 
         else:
             empleadoTieneEntradaHoy = False
             empleadoTieneSalidaHoy = False
             
+        
+        
+        
        
         if "actividadAgregada" in request.session:
             actividadAgregada = request.session["actividadAgregada"]
@@ -143,7 +170,8 @@ def registro(request):
             
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados,
                                                             "actividadAgregada":actividadAgregada, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
-                                                            "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto,"listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia})
+                                                            "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto,"listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
+                                                            "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar})
             
         
         
@@ -154,7 +182,8 @@ def registro(request):
 
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados,
                                                             "entradaRegistradaCorrectamente":entradaRegistradaCorrectamente, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
-                                                            "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto,"listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia})
+                                                            "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto,"listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
+                                                            "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar})
         
         #Si hay un error al registrar la entrada
         if "errorEnEntrada" in request.session:
@@ -163,7 +192,8 @@ def registro(request):
             
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados,
                                                             "errorEnEntrada":errorEnEntrada, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
-                                                            "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia})
+                                                            "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
+                                                            "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar})
         #Si se añadieron los empleados correctamente
         if "empleadosAñadidosCorrectamente" in request.session:
             empleadosAñadidosCorrectamente = request.session["empleadosAñadidosCorrectamente"]
@@ -171,7 +201,8 @@ def registro(request):
             
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                         "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
-                                                        "empleadosAñadidosCorrectamente":empleadosAñadidosCorrectamente})
+                                                        "empleadosAñadidosCorrectamente":empleadosAñadidosCorrectamente,
+                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar})
             
             
         #Si hay un error al añadir empleados
@@ -181,7 +212,8 @@ def registro(request):
             
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                         "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
-                                                        "errorAñadirEmpleados":errorAñadirEmpleados})
+                                                        "errorAñadirEmpleados":errorAñadirEmpleados,
+                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar})
             
         if "salidaRegistradaCorrectamente" in request.session:
             salidaRegistradaCorrectamente = request.session["salidaRegistradaCorrectamente"]
@@ -189,7 +221,8 @@ def registro(request):
             
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                         "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
-                                                        "salidaRegistradaCorrectamente":salidaRegistradaCorrectamente}) 
+                                                        "salidaRegistradaCorrectamente":salidaRegistradaCorrectamente,
+                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar}) 
            
         
         if "errorEnSalida" in request.session:
@@ -198,13 +231,15 @@ def registro(request):
             
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                         "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
-                                                        "errorEnSalida":errorEnSalida})
+                                                        "errorEnSalida":errorEnSalida,
+                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar})
             
             
             
             
         return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
-                                                        "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia})
+                                                        "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
+                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar})
         
     else:
         return redirect("/login/")
@@ -336,33 +371,34 @@ def registrarEntrada(request):
 
                 idGrupoTelegram = keysBotAsistencia.idGrupoAsistencia
 
+                stringNombresEmpleados = ""
+                contadorEmpleados = 0
+                
+                for empleado in listaEmpleadosTelegram:
+                    contadorEmpleados = contadorEmpleados +1
+                    
+                    if contadorEmpleados == 1:
+                        stringNombresEmpleados = empleado + "\n"
+                    else:
+                        stringNombresEmpleados = stringNombresEmpleados+ empleado + " \n"
+                            
                 if conProyectoInterno:
                     consultaProyecto = Proyectos.objects.filter(id_proyecto = proyectoElegidoSelect)
                     for datoProyecto in consultaProyecto:
                         nombreProyecto = datoProyecto.nombre_proyecto
                         
-                    stringNombresEmpleados = ""
-                    contadorEmpleados = 0
-                    
-                    for empleado in listaEmpleadosTelegram:
-                        contadorEmpleados = contadorEmpleados +1
-                        
-                        if contadorEmpleados == 1:
-                            stringNombresEmpleados = empleado + "\n"
-                        else:
-                            stringNombresEmpleados = stringNombresEmpleados+ empleado + " \n"
-                    
                     mensaje = "\U0001F55B NUEVA ENTRADA \U0001F55B \n Proyecto: "+nombreProyecto+" \U0001F4BC \n \n "+stringNombresEmpleados+"\n"+"Actividad a realizar: "+actividadARealizar
                 else:
                     mensaje = "\U0001F55B NUEVA ENTRADA \U0001F55B \n Sin proyecto, actividad: "+motivoProyectoInput+" \U0001F4BC \n \n "+stringNombresEmpleados+"\n"+"Actividad a realizar: "+actividadARealizar
                 
                 
                 botCustom.sendMessage(idGrupoTelegram,mensaje)
-            except:
-                print("An exception occurred")
+            except Exception as e:
+                print("An exception occurred",e)
             
             return redirect("/registro/")
-        except:
+        except Exception as e:
+            print("ERROR:",e)
             request.session["errorEnEntrada"] = "Error en entrada! Consultar a soporte!"
             return redirect("/registro/")
             
@@ -394,10 +430,10 @@ def reportarActividadEmpleado(request):
                 proyecto = datosConsultaEntrada.proyecto_interno_id
                 
                 if proyecto == None:
-                    proyecto = datosConsultaEntrada.motivo
+                    motivo = datosConsultaEntrada.motivo
                     
                     #Ver todos los empleados con esa misma asistencia en el proyecto o tarea
-                    consultaEmpleadosConLaMismaAsistencia = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, motivo = proyecto)
+                    consultaEmpleadosConLaMismaAsistencia = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, motivo = motivo)
                      
                 else:
                     consultaProyecto = Proyectos.objects.filter(id_proyecto = proyecto)
@@ -435,19 +471,19 @@ def reportarActividadEmpleado(request):
             botCustom = telepot.Bot(tokenTelegram)
 
             idGrupoTelegram = keysBotAsistencia.idGrupoAsistencia
-
+            
+            if proyecto == None:
+                mensaje = "\U0001F97E NUEVA ACTIVIDAD \U0001F97E \n Tarea: "+motivo+" \U0001F4BC \n \n "+stringNombresEmpleados+"\n"+"Nueva Actividad: "+activiadReportada
+            else:
+                mensaje = "\U0001F97E NUEVA ACTIVIDAD \U0001F97E \n Proyecto: "+proyecto+" \U0001F4BC \n \n "+stringNombresEmpleados+"\n"+"Nueva Actividad: "+activiadReportada
                 
-            mensaje = "\U0001F97E NUEVA ACTIVIDAD \U0001F97E \n Proyecto: "+proyecto+" \U0001F4BC \n \n "+stringNombresEmpleados+"\n"+"Nueva Actividad: "+activiadReportada
-            
-            
-            
             botCustom.sendMessage(idGrupoTelegram,mensaje)
             
             request.session["actividadAgregada"] = "Actividad agregada satisfactoriamente!"
             
             return redirect("/registro/")
-        except:
-            print("An exception occurred")
+        except Exception as e:
+            print("An exception occurred",e)
         
         
         
@@ -584,21 +620,24 @@ def agregarPersonalAAsistencia(request):
 
                 idGrupoTelegram = keysBotAsistencia.idGrupoAsistencia
 
+                stringNombresEmpleados = ""
+                contadorEmpleados = 0
+                
+                for empleado in listaEmpleadosTelegram:
+                    contadorEmpleados = contadorEmpleados +1
+                    
+                    if contadorEmpleados == 1:
+                        stringNombresEmpleados = empleado + "\n"
+                    else:
+                        stringNombresEmpleados = stringNombresEmpleados+ empleado + " \n"
+                            
+                            
                 if conProyectoInterno:
                     consultaProyecto = Proyectos.objects.filter(id_proyecto = proyecto)
                     for datoProyecto in consultaProyecto:
                         nombreProyecto = "#"+datoProyecto.numero_proyecto_interno + " - "+datoProyecto.nombre_proyecto
                         
-                    stringNombresEmpleados = ""
-                    contadorEmpleados = 0
                     
-                    for empleado in listaEmpleadosTelegram:
-                        contadorEmpleados = contadorEmpleados +1
-                        
-                        if contadorEmpleados == 1:
-                            stringNombresEmpleados = empleado + "\n"
-                        else:
-                            stringNombresEmpleados = stringNombresEmpleados+ empleado + " \n"
                     
                     mensaje = "\U0001F477 INCORPORACIÓN DE PERSONAL \U0001F477 \n Agregados por: "+nombreCompletoEmpleado+"\nProyecto: "+nombreProyecto+" \U0001F4BC \n \n "+stringNombresEmpleados+"\n"+"Actividad realizada: "+actividadRealizada
                 else:
@@ -606,11 +645,12 @@ def agregarPersonalAAsistencia(request):
                 
                 
                 botCustom.sendMessage(idGrupoTelegram,mensaje)
-            except:
-                print("An exception occurred")
+            except Exception as e:
+                print("An exception occurred",e)
             
             return redirect("/registro/")
-        except:
+        except Exception as e:
+            print("Error: ",e)
             request.session["errorAñadirEmpleados"] = "Error al añadir empleado! Consultar a soporte!"
             return redirect("/registro/")
         
@@ -642,10 +682,9 @@ def registrarSalida(request):
                 motivo = datoAsistencia.motivo   #O puede tener uun motivo o es ""
                 fechaEntrada = datoAsistencia.fecha_entrada
 
-            conProyecto = False   
-            if proyectoInterno == None:
-                conProyecto = True
-            if conProyecto:
+            
+                
+            if proyectoInterno != None:
                 consultaAsistenciaEmpleadosIguales = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, fecha_salida__isnull = True, proyecto_interno_id = proyectoInterno)
                 
             else: 
@@ -658,7 +697,7 @@ def registrarSalida(request):
                     personalExterno = asistencia.personal_externo
                     listaEmpleadosTelegram.append("Personal externo: "+personalExterno)
                     
-                    if conProyecto:
+                    if proyectoInterno != None:
                         actualizacionSalida = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, fecha_salida__isnull = True, proyecto_interno_id = proyectoInterno, personal_externo = personalExterno).update(fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
                     else: 
                         actualizacionSalida = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, motivo = motivo,fecha_salida__isnull = True, personal_externo = personalExterno).update(fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
@@ -669,7 +708,7 @@ def registrarSalida(request):
                         nombreEmpleado = datoEmpleado.nombre + " "+datoEmpleado.apellidos
                     listaEmpleadosTelegram.append(nombreEmpleado)
                         
-                    if conProyecto:
+                    if proyectoInterno != None:
                         actualizacionSalida = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, fecha_salida__isnull = True, proyecto_interno_id = proyectoInterno, id_empleado_id = idEmpleado).update(fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
                     else: 
                         actualizacionSalida = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, motivo = motivo,fecha_salida__isnull = True, id_empleado_id = idEmpleado).update(fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
@@ -685,30 +724,31 @@ def registrarSalida(request):
 
                 idGrupoTelegram = keysBotAsistencia.idGrupoAsistencia
 
-                if conProyecto:
+                stringNombresEmpleados = ""
+                contadorEmpleados = 0
+                
+                for empleado in listaEmpleadosTelegram:
+                    contadorEmpleados = contadorEmpleados +1
+                    
+                    if contadorEmpleados == 1:
+                        stringNombresEmpleados = empleado + "\n"
+                    else:
+                        stringNombresEmpleados = stringNombresEmpleados+ empleado + " \n"
+                            
+                            
+                if proyectoInterno != None:
                     consultaProyecto = Proyectos.objects.filter(id_proyecto = proyectoInterno)
                     for datoProyecto in consultaProyecto:
                         nombreProyecto = datoProyecto.nombre_proyecto
                         
-                    stringNombresEmpleados = ""
-                    contadorEmpleados = 0
-                    
-                    for empleado in listaEmpleadosTelegram:
-                        contadorEmpleados = contadorEmpleados +1
-                        
-                        if contadorEmpleados == 1:
-                            stringNombresEmpleados = empleado + "\n"
-                        else:
-                            stringNombresEmpleados = stringNombresEmpleados+ empleado + " \n"
-                    
                     mensaje = "\U0001F6A9 SALIDA REGISTRADA \U0001F6A9 \n Proyecto: "+nombreProyecto+" \U0001F4BC \n \n "+stringNombresEmpleados+"\n"+"Actividades realizadas: "+actividadesRealizadas
                 else:
                     mensaje = "\U0001F6A9 SALIDA REGISTRADA \U0001F6A9 \n Sin proyecto, actividad: "+motivo+" \U0001F4BC \n \n "+stringNombresEmpleados+"\n"+"Actividades realizadas: "+actividadesRealizadas
                 
                 
                 botCustom.sendMessage(idGrupoTelegram,mensaje)
-            except:
-                print("An exception occurred")
+            except Exception as e:
+                print("An exception occurred", e)
 
             return redirect("/registro/")
         except Exception as e:

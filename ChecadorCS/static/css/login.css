@@ -627,3 +627,19 @@ footer a {
 	border: 1px solid black!important;
 	background-color: #EB455F!important;
   }
+
+  .colorLabelSalida{
+	color: #03C988!important;
+  }
+
+  .colorLabelSalida2{
+	color: #2192FF!important;
+  }
+
+  .colorLabelSalida3{
+	color: #DF2E38!important;
+  }
+
+  #horaActual{
+	color: #B3005E!important;
+  }

@@ -224,7 +224,7 @@
     </form>
     {% endif %}
 
-    {% if empleadoTieneEntradaHoy %}
+    {% if empleadoTieneEntradaHoy == True and empleadoTieneSalidaHoy == False %}
       <div class="form-container sign-in-container">
         <center>
           <h1 class="animate__animated animate__slideInDown" id="horaActual"></h1>
@@ -412,6 +412,37 @@
         
       </div>
     {% endif %}
+
+    {% if empleadoTieneEntradaHoy == True and empleadoTieneSalidaHoy == True %}
+      <div class="form-container sign-in-container">
+        <center>
+          <h1 class="animate__animated animate__slideInDown" id="horaActual"></h1>
+          <br>
+          <h1 id="fechaActual"></h1>
+
+        <!-- DIV BOTONES INTERFAZ PRINCIPAL -->
+          <div class="animate__animated animate__zoomInDown">
+            <br>
+            <h3>Hola, {{nombresEmpleado}}!</h3>
+            
+            <span>Ya tienes asistencia del día de hoy</span>
+            <h5><span class="colorLabelSalida">Entrada:</span> {{fechaAsistenciaMostrar}} a las {{horaAsistenciaMostrar}} hrs</h5>
+            <h5>Proyecto/Motivo: {{proyectoMotivoMostrar}}</h5>
+            <h6><span class="colorLabelSalida2">Actividades realizadas:</span> {{actividadesRealizadas}}</h6>
+            <h5><span class="colorLabelSalida3">Salida:</span> {{fechaSalidaMostrar}} a las {{horaSalidaMostrar}} hrs</h5>
+            
+
+
+
+
+            
+          </div>
+
+
+        </center>
+        
+      </div>
+    {% endif %}
   </div>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -515,8 +546,12 @@
 <script src={% static 'js/registro.js' %}></script>
 {% endif %}
 
-{% if empleadoTieneEntradaHoy %}
+{% if empleadoTieneEntradaHoy and empleadoTieneSalidaHoy == False %}
 <script src={% static 'js/registro2.js' %}></script>
+{% endif %}
+
+{% if empleadoTieneEntradaHoy and empleadoTieneSalidaHoy == True %}
+<script src={% static 'js/registro3.js' %}></script>
 {% endif %}
 
 </body>
