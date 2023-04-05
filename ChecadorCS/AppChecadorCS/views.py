@@ -243,7 +243,7 @@ def registrarEntrada(request):
             horaEntrada = datetime.now().time()
             horaEntrada = horaEntrada.strftime("%H:%M:%S")
         else:
-            horaEntrada = horaManualInput
+            horaEntrada = horaManualInput+":00"
             
         listaEmpleadosTelegram = []
             
@@ -632,7 +632,7 @@ def registrarSalida(request):
                 horaSalida = datetime.now().time()
                 horaSalida = horaSalida.strftime("%H:%M:%S")
             else:
-                horaSalida = horaManualInput
+                horaSalida = horaManualInput+":00"
 
             actividadesRealizadas = request.POST["actividadesRealizadas"] 
             consultaAsistenciaEmpleado = AsistenciaProyectoForaneo.objects.filter(id_empleado_id = idEmpleadoPrincipal, fecha_salida__isnull = True)

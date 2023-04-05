@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="{% static 'css/login.css' %}">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <link rel="icon" href={% static 'images/icons/ra.ico' %} type="image/x-icon">
+
+  <script src="https://kit.fontawesome.com/9ba2fa3843.js" crossorigin="anonymous"></script>
  
 
 
@@ -23,11 +25,12 @@
     <!-- CONTENEDOR FORMULARIO DE ENTRADA -->
     {% if empleadoTieneEntradaHoy == False %}
     <form action="/registrarEntrada/" method="POST">{% csrf_token %}
-    <!-- DIV PARA REGISTRAR ENTRADA -->
+    
         <div class="form-container sign-in-container">
           <h1 class="animate__animated animate__slideInDown" id="horaActual"></h1>
           <br>
           <h1 id="fechaActual"></h1>
+          <!-- DIV PARA REGISTRAR ENTRADA -->
           <div id="interfazBotones">
             <br>
             <h3 >Bienvenido, {{nombresEmpleado}}</h3>
@@ -48,173 +51,175 @@
               <span>Departamento de Sistemas</span>
             </span>
           </div>
-        </div>
-    <!-- DIV HORAS TRABAJADAS ------------------------------------------------------------------------------- -->
-        <div style="display:none" id="horasTrabajadas">
-          <br>
-          <br>
-          
-          
-          <div id="divBotonesHora">
-            <h3>Elegir hora de entrada</h3>
-            <button class="animate__animated animate__fadeIn" id="botonHoraManual" type="button" onclick="mostrarInputHoraManual()">Hora Manual</button>
-            <br><br><br>
-            <button class="animate__animated animate__fadeIn" id="btnHoraActual" type="button" onclick="mostrarDivProyecto()">Hora Actual</button>
-          </div>
-          
-          <div id="divHoraManual">
-            <h3>Ingresar hora manual</h3>
-            <input  type="time" name="horaManualInput" min="00:00" max="23:59">
+        
+      <!-- DIV HORAS TRABAJADAS ------------------------------------------------------------------------------- -->
+          <div id="horasTrabajadas">
             <br>
-            <span> 
-              <button type="button" class="animate__animated animate__fadeIn botonesProyectos" onclick="mostrarDivProyecto()">Continuar</button>
-              &nbsp;
-              &nbsp;
-              <button  class="animate__animated animate__fadeIn botonesProyectos" type="button" onclick="mostrarOpcionesHora()" >Regresar</button>
-            </span>
-          </div>  
-        </div>
-    <!--DIVR DE PROYECTOS -------------------------------------------------------------------------------------------------------------------------------------- -->
-        <div id="divProyectos">
-          
-          <div id="contenedorProyecto" class="animate__animated animate__fadeIn">
             <br>
-            <h3 id="h3ElegirProyecto">Elegir Proyecto:</h3>
             
-
-            <select id="selectProyectos" name="proyectoElegidoSelect">
-
-            {% for datoProyecto in consultaProyectos %}
-            <option value="{{datoProyecto.id_proyecto}}">#{{datoProyecto.numero_proyecto_interno}} - {{datoProyecto.nombre_proyecto}} </option>
-            {% endfor %}
-            </select>
-          </div>	
-          <div id="divSinProyecto" class="animate__animated animate__fadeIn">
-            <h3>Ingresar Motivo:</h3>
             
-            <input type="text" placeholder="Escribir motivo" name="motivoProyectoInput"/>
-
-          </div>
-      
-          <h3> 
-            Sin Proyecto 
-            <div class="switch-button">
-              <input type="checkbox" name="switchProyecto" id="switch-label" class="switch-button__checkbox" onclick="ocultarProyectos()">
-              <label for="switch-label" class="switch-button__label"></label>
+            <div id="divBotonesHora">
+              <h3 class="animate__animated animate__fadeInDown">Elegir hora de entrada</h3>
+              
+              <button type="button" class="animate__animated animate__fadeIn botonEntradaHoraManual"  onclick="mostrarInputHoraManual()">Hora Manual</button>
+              <br><br><br>
+              <button type="button" class="animate__animated animate__fadeIn botonEntradaHoraActual"  onclick="mostrarDivProyecto()">Hora Actual</button>
             </div>
-          </h3>
-
-          <span> 
-            <button  class="animate__animated animate__fadeIn botonesProyectos" type="button" onclick="mostrarDivPersonal()">Continuar</button>
-            &nbsp;
-            &nbsp;
-            <button  class="animate__animated animate__fadeIn botonesProyectos" type="button" onclick="ocultarProyectoMostrarOpcionesHora()" >Regresar</button>
-          </span>
-        </div>
-    <!---------- DIV PARA AGREGAR PERSONAL---------------------->
-        <div id="divPersonal">
-          <h3 >Asistencia de: {{nombresEmpleado}}</h3>
-          <span id="spanSwitchAgregarEmpleados">¿Deseas agregar compañer@s?
-            <h3> 
-              NO
-              <div class="switch-button2">
-                <input type="checkbox" name="switchMasCompaneros" id="switch-label2" class="switch-button__checkbox2" onclick="mostrarSelectEmpleados()">
-                <label for="switch-label2" class="switch-button__label2"></label>
-              </div>
-              SI
-            </h3>
-          </span>
-          <div id="divSelectEmpleado">
-            <select id="selectEmpleados" name="listaEmpleadosExtras" multiple="multiple">
-              {% for empleado in listaEmpleados %}
-              <option value="{{empleado.0}}">{{empleado.1}}</option>
-              {% endfor %}
-            </select>
-            <div  id="spanBotonGuardarEmpleado">
+            
+            <div id="divHoraManual">
+              <h3 class="animate__animated animate__fadeInDown">Ingresar hora manual</h3>
+              <input  type="time" name="horaManualInput" class="animate__animated animate__fadeInDown" min="00:00" max="23:59">
+              <br><br>
               <span> 
-                <button  class="animate__animated animate__fadeIn botonGuardarEmpleados" type="button" onclick="guardarEmpleados()">Terminar de agregar empleados</button>
+                <button type="button" class="animate__animated animate__fadeIn botonesProyectos botonContinuar" onclick="mostrarDivProyecto()">Continuar</button>
+                &nbsp;
+                &nbsp;
+                <button  class="animate__animated animate__fadeIn botonesProyectos botonRegresar" type="button" onclick="mostrarOpcionesHora()" ><i class="fa-sharp fa-solid fa-arrow-left"></i> Regresar</button>
+              </span>
+            </div>  
+          </div>
+      <!--DIVR DE PROYECTOS -------------------------------------------------------------------------------------------------------------------------------------- -->
+          <div id="divProyectos">
+            
+            <div id="contenedorProyecto" class="animate__animated animate__fadeIn">
+              <br>
+              <h3 id="h3ElegirProyecto" class="animate__animated animate__fadeInDown">Elegir Proyecto:</h3>
+              
+
+              <select id="selectProyectos" class="animate__animated animate__fadeInDown" name="proyectoElegidoSelect">
+
+              {% for datoProyecto in consultaProyectos %}
+              <option value="{{datoProyecto.id_proyecto}}">#{{datoProyecto.numero_proyecto_interno}} - {{datoProyecto.nombre_proyecto}} </option>
+              {% endfor %}
+              </select>
+            </div>	
+            <div id="divSinProyecto" class="animate__animated animate__fadeIn">
+              <h3>Ingresar Motivo:</h3>
+              
+              <input type="text" placeholder="Escribir motivo" name="motivoProyectoInput"/>
+
+            </div>
+        
+            <h3 class="animate__animated animate__fadeInDown"> 
+              Sin Proyecto 
+              <div class="switch-button">
+                <input type="checkbox" name="switchProyecto" id="switch-label" class="switch-button__checkbox" onclick="ocultarProyectos()">
+                <label for="switch-label" class="switch-button__label"></label>
+              </div>
+            </h3>
+
+            <span> 
+              <button  class="animate__animated animate__fadeIn botonesProyectos botonContinuar" type="button" onclick="mostrarDivPersonal()">Continuar</button>
+              &nbsp;
+              &nbsp;
+              <button  class="animate__animated animate__fadeIn botonesProyectos botonRegresar" type="button" onclick="ocultarProyectoMostrarOpcionesHora()" ><i class="fa-sharp fa-solid fa-arrow-left"></i> Regresar</button>
+            </span>
+          </div>
+      <!---------- DIV PARA AGREGAR PERSONAL---------------------->
+          <div id="divPersonal">
+            <h3 class="animate__animated animate__fadeInDown">Asistencia de: {{nombresEmpleado}}</h3>
+            <span id="spanSwitchAgregarEmpleados" class="animate__animated animate__fadeInDown">¿Deseas agregar compañer@s?
+              <h3> 
+                NO
+                <div class="switch-button2" class="animate__animated animate__fadeInDown">
+                  <input type="checkbox" name="switchMasCompaneros" id="switch-label2" class="switch-button__checkbox2" onclick="mostrarSelectEmpleados()">
+                  <label for="switch-label2" class="switch-button__label2"></label>
+                </div>
+                SI
+              </h3>
+            </span>
+            <div id="divSelectEmpleado">
+              <select id="selectEmpleados" class="animate__animated animate__fadeInDown" name="listaEmpleadosExtras" multiple="multiple">
+                {% for empleado in listaEmpleados %}
+                <option value="{{empleado.0}}">{{empleado.1}}</option>
+                {% endfor %}
+              </select>
+              <div  id="spanBotonGuardarEmpleado">
+                <span> 
+                  <button  class="animate__animated animate__fadeIn botonGuardarEmpleados" type="button" onclick="guardarEmpleados()">Terminar de agregar empleados</button>
+                </span>
+              </div>
+            
+            </div>
+            <div id="divEmpleadosYaGuardados">
+              <span id="textoContadorEmpleados"><span id="contadorEmpleadosGuardados"></span> empleados de custom</span>
+              <div id="divSpanEmpleadosCustom">
+                <span id="listadoEmpleadosCustom"></span>
+              </div>
+              
+              <center>
+                <span> 
+                  <button  class="animate__animated animate__fadeIn botonEditarEmpleadosCustom" id="botonEditarEmpleadosAgregados" type="button" onclick="volverAAgregarEmpleados()">Editar empleados Custom</button>
+                </span>
+              </center>
+              
+            </div>
+
+            <span class="animate__animated animate__fadeInDown">¿Deseas agregar personal externo?
+              <h3> 
+                NO
+                <div class="switch-button3" class="animate__animated animate__fadeInDown">
+                  <input type="checkbox" name="switchMasCompaneros" id="switch-label3" class="switch-button__checkbox3" onclick="mostrarDivPersonalExterno()">
+                  <label for="switch-label3" class="switch-button__label3"></label>
+                </div>
+                SI
+              </h3>
+            </span>
+
+            <div id="divInputsDePersonalExterno">
+              <div id="divSpanNumeroPersonalExterno">
+                <span id="numeroPersonalExterno"></span>
+              </div>
+              <div id="divSpanNombresPersonalExterno">
+                <span id="stringNombresPersonalExterno"></span>
+              </div>
+              
+              <input type="text" id="nombrePersonalExterno" placeholder="Nombre.." name="usuario"/>
+              <input type="hidden" id="listaNombresPersonalExterno" name="listaNombresPersonalExterno" value="" name="listaNombresPersonalExterno">
+              <span id="botonSoloAgregarPersonal"> 
+                <button  class="animate__animated animate__fadeIn botonesPersonalExterno" type="button" onclick="agregarUnPersonalExterno()" >Agregar</button>
+              </span>
+              <span id="divDosBotonesPersonal"> 
+                <button  class="animate__animated animate__fadeIn botonesPersonalExterno2" type="button" onclick="finalizarPersonalExterno()">Finalizar</button>
+                &nbsp;
+                &nbsp;
+                <button  class="animate__animated animate__fadeIn botonesPersonalExterno" type="button" onclick="agregarUnPersonalExterno()" >Agregar</button>
               </span>
             </div>
-           
-          </div>
-          <div id="divEmpleadosYaGuardados">
-            <span id="textoContadorEmpleados"><span id="contadorEmpleadosGuardados"></span> empleados de custom</span>
-            <div id="divSpanEmpleadosCustom">
-              <span id="listadoEmpleadosCustom"></span>
-            </div>
-            
+            <br>
             <center>
               <span> 
-                <button  class="animate__animated animate__fadeIn botonEditarEmpleadosCustom" id="botonEditarEmpleadosAgregados" type="button" onclick="volverAAgregarEmpleados()">Editar empleados Custom</button>
+                <button type="button" class="animate__animated animate__fadeIn botonesProyectos botonContinuar" onclick="mostrarDivActividad()">Continuar</button>
+                &nbsp;
+                &nbsp;
+                <button  class="animate__animated animate__fadeIn botonesProyectos botonRegresar" type="button" onclick="regresarDivProyecto()" ><i class="fa-sharp fa-solid fa-arrow-left"></i> Regresar</button>
               </span>
             </center>
             
-          </div>
 
-          <span >¿Deseas agregar personal externo?
-            <h3> 
-              NO
-              <div class="switch-button3">
-                <input type="checkbox" name="switchMasCompaneros" id="switch-label3" class="switch-button__checkbox3" onclick="mostrarDivPersonalExterno()">
-                <label for="switch-label3" class="switch-button__label3"></label>
-              </div>
-              SI
-            </h3>
-          </span>
 
-          <div id="divInputsDePersonalExterno">
-            <div id="divSpanNumeroPersonalExterno">
-              <span id="numeroPersonalExterno"></span>
-            </div>
-            <div id="divSpanNombresPersonalExterno">
-              <span id="stringNombresPersonalExterno"></span>
-            </div>
+
             
-            <input type="text" id="nombrePersonalExterno" placeholder="Nombre.." name="usuario"/>
-            <input type="hidden" id="listaNombresPersonalExterno" name="listaNombresPersonalExterno" value="" name="listaNombresPersonalExterno">
-            <span id="botonSoloAgregarPersonal"> 
-              <button  class="animate__animated animate__fadeIn botonesPersonalExterno" type="button" onclick="agregarUnPersonalExterno()" >Agregar</button>
-            </span>
-            <span id="divDosBotonesPersonal"> 
-              <button  class="animate__animated animate__fadeIn botonesPersonalExterno2" type="button" onclick="finalizarPersonalExterno()">Finalizar</button>
-              &nbsp;
-              &nbsp;
-              <button  class="animate__animated animate__fadeIn botonesPersonalExterno" type="button" onclick="agregarUnPersonalExterno()" >Agregar</button>
-            </span>
           </div>
-          <br>
-          <center>
-            <span> 
-              <button type="button" class="animate__animated animate__fadeIn botonesProyectos" onclick="mostrarDivActividad()">Continuar</button>
-              &nbsp;
-              &nbsp;
-              <button  class="animate__animated animate__fadeIn botonesProyectos" type="button" onclick="regresarDivProyecto()" >Regresar</button>
-            </span>
-          </center>
-          
 
+      <!-- DIV PARA AGREGAR ACTIVIDAD -->
+          <div id="divInputActividad">
+            <h3 class="animate__animated animate__fadeInDown">Actividad a Realizar:</h3>
+            <input type="text" name="actividadARealizar" class="animate__animated animate__fadeInDown" placeholder="Ingresar Actividad" required maxlength="255">
+            <br><br>
+            <center>
+              <span> 
+                <button type="button"  class="animate__animated animate__fadeIn botonesProyectos botonRegresar"  onclick="regresarADivPersonal()"><i class="fa-sharp fa-solid fa-arrow-left"></i> Regresar</button>
+              </span>
+            </center>
+            <br>
 
-
-          
-        </div>
-
-    <!-- DIV PARA AGREGAR ACTIVIDAD -->
-        <div id="divInputActividad">
-          <h3>Actividad a Realizar:</h3>
-          <input type="text" name="actividadARealizar" required maxlength="255">
-          <br><br>
-          <center>
-            <span> 
-              <button type="button"  class="animate__animated animate__fadeIn botonesProyectos"  onclick="regresarADivPersonal()">Regresar</button>
-            </span>
-          </center>
-          <br>
-
-          <center>
-            <span> 
-              <button type="submit"  class="animate__animated animate__fadeIn" id="botonGuardarEntrada">Guardar Entrada</button>
-            </span>
-          </center>
+            <center>
+              <span> 
+                <button type="submit"  class="animate__animated animate__fadeIn" id="botonGuardarEntrada"><i class="fa-solid fa-floppy-disk"></i> Guardar Entrada</button>
+              </span>
+            </center>
+          </div>
         </div>
     </form>
     {% endif %}
@@ -257,18 +262,17 @@
             <h3>Agregar actividad</h3>
             <br>
             <form action="/reportarActividadEmpleado/" method="POST">{% csrf_token %}
-              <input type="text" name="activiadReportada" required maxlength="255">
+              <input type="text" name="activiadReportada" placeholder="Ingresar actividad" required maxlength="255">
               <br><br>
               <center>
                 <span> 
-                  <button type="button"  class="animate__animated animate__fadeIn botonesProyectos"  onclick="regresarDivBotones()">Regresar</button>
+                  <button type="submit"  class="animate__animated animate__fadeIn botonesProyectos botonContinuar" ><i class="fa-solid fa-floppy-disk"></i> Guardar Actividad</button>
                 </span>
               </center>
               <br>
-
               <center>
                 <span> 
-                  <button type="submit"  class="animate__animated animate__fadeIn botonesProyectos" >Guardar Actividad</button>
+                  <button type="button"  class="animate__animated animate__fadeIn botonesProyectos botonRegresar"  onclick="regresarDivBotones()"><i class="fa-sharp fa-solid fa-arrow-left"></i> Regresar</button>
                 </span>
               </center>
             </form>
@@ -355,9 +359,9 @@
               </center>
               <center>
                 <span> 
-                  <button type="submit" class="animate__animated animate__fadeIn botonesProyectos" >Guardar</button>
+                  <button type="submit" class="animate__animated animate__fadeIn botonesProyectos botonContinuar" ><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
                   &nbsp;
-                  <button  class="animate__animated animate__fadeIn botonesProyectos" type="button" onclick="regresarDivBotones()" >Regresar</button>
+                  <button  class="animate__animated animate__fadeIn botonesProyectos botonRegresar" type="button" onclick="regresarDivBotones()" ><i class="fa-sharp fa-solid fa-arrow-left"></i> Regresar</button>
                 </span>
               </center>
             </form>
@@ -369,35 +373,35 @@
             <br><br>
             <div id="divBotonesHora">
               <h3>Elegir hora de entrada</h3>
-              <button class="animate__animated animate__fadeIn" id="botonHoraManual" type="button" onclick="mostrarInputHoraManual()">Hora Manual</button>
+              <button class="animate__animated animate__fadeIn botonEntradaHoraManual" id="botonHoraManual" type="button" onclick="mostrarInputHoraManual()">Hora Manual</button>
               <br><br><br>
-              <button class="animate__animated animate__fadeIn" id="btnHoraActual" type="button" onclick="mostrarDivActuvidadesRealizadas()">Hora Actual</button>
+              <button class="animate__animated animate__fadeIn botonEntradaHoraActual" id="btnHoraActual" type="button" onclick="mostrarDivActuvidadesRealizadas()">Hora Actual</button>
             </div>
             
             <div id="divHoraManual">
               <h3>Ingresar hora manual</h3>
               <input  type="time" name="horaManualInput" min="00:00" max="23:59">
-              <br>
+              <br><br>
               <span> 
-                <button type="button" class="animate__animated animate__fadeIn botonesProyectos" onclick="mostrarDivActuvidadesRealizadas()">Continuar</button>
+                <button type="button" class="animate__animated animate__fadeIn botonesProyectos botonContinuar" onclick="mostrarDivActuvidadesRealizadas()">Continuar</button>
                 &nbsp;
                 &nbsp;
-                <button  class="animate__animated animate__fadeIn botonesProyectos" type="button" onclick="mostrarOpcionesHora()" >Regresar</button>
+                <button  class="animate__animated animate__fadeIn botonesProyectos botonRegresar" type="button" onclick="mostrarOpcionesHora()" ><i class="fa-sharp fa-solid fa-arrow-left"></i> Regresar</button>
               </span>
             </div>  
           </div>
         
         <!-- DIV ACTIVIDADES REALIZADAS FINAL -->
           <div id="divActividadesFinalesSalida">
-            <br><br>
+            <br>
             <h3>Ingresar actividades realizadas</h3>
             <br>
             <textarea rows="5" cols="33" name="actividadesRealizadas" required></textarea>
             <br><br>
             <span> 
-              <button  class="animate__animated animate__fadeIn botonesProyectos" type="button" onclick="mostrarDivHorasSalida()" >Regresar</button>
-              &nbsp;
-              <button type="submit" class="animate__animated animate__fadeIn botonSalida2">Guardar salida</button>
+              <button  class="animate__animated animate__fadeIn botonesProyectos botonRegresar" type="button" onclick="mostrarDivHorasSalida()" ><i class="fa-sharp fa-solid fa-arrow-left"></i> Regresar</button>
+              <br><br>
+              <button type="submit" class="animate__animated animate__fadeIn botonSalida2"><i class="fa-solid fa-floppy-disk"></i> Guardar salida</button>
             </span>
             
             
@@ -505,7 +509,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> 
-<script  src={% static 'js/login.js' %}></script>
+
 
 {% if empleadoTieneEntradaHoy == False %}
 <script src={% static 'js/registro.js' %}></script>

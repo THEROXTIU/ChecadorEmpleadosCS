@@ -18,6 +18,9 @@ const fechaHoy = `${diaSemana}, ${dia} de ${mes} de ${anio}`;
 
 var fechaActual = document.getElementById("fechaActual");
 var horaActual = document.getElementById("horaActual");
+
+var interfazBotones = document.getElementById("interfazBotones");
+
 var divHoraManualnual = document.getElementById("divHoraManual");
 var divBotonesHora = document.getElementById("divBotonesHora");
 var divProyectos = document.getElementById("divProyectos");
@@ -31,6 +34,8 @@ var divSpanNumeroPersonalExterno = document.getElementById("divSpanNumeroPersona
 var divDosBotonesPersonal = document.getElementById("divDosBotonesPersonal");
 var divSpanNombresPersonalExterno = document.getElementById("divSpanNombresPersonalExterno");
 var divInputActividad = document.getElementById("divInputActividad");
+
+var horasTrabajadas = document.getElementById("horasTrabajadas");
 
 
 
@@ -46,6 +51,8 @@ divSpanNumeroPersonalExterno.style.display = "none";
 divDosBotonesPersonal.style.display = "none";
 divSpanNombresPersonalExterno.style.display = "none";
 divInputActividad.style.display = "none";
+horasTrabajadas.style.display = "none";
+divBotonesHora.style.display = "none";
 
 function mostrarHoraActual() {
     const fecha = new Date();
@@ -66,18 +73,14 @@ function mostrarHoraActual() {
 setInterval(mostrarHoraActual, 10);
 
 function ocultarDivBotones(){
-    var interfazBotones = document.getElementById("interfazBotones");
     interfazBotones.style.display="none";
-    var horasTrabajadas = document.getElementById("horasTrabajadas");
     horasTrabajadas.style.display="block";
-    
-
+    divBotonesHora.style.display = "block";
 }
+
 function mostrarInputHoraManual(){
     divHoraManualnual.style.display="block";
     divBotonesHora.style.display="none";
-
-    
 }
 
 function mostrarOpcionesHora(){
@@ -287,11 +290,21 @@ function regresarDivProyecto(){
 function mostrarDivActividad(){
     divPersonal.style.display = "none";
     divInputActividad.style.display = "block";
+
+    const textoHoraActual = document.getElementById("horaActual");
+    textoHoraActual.style.cssText = "font-size: 60px!important;";
+    const textoFechaActual = document.getElementById("fechaActual");
+    textoFechaActual.style.fontSize = "30px";
 }
 
 function regresarADivPersonal(){
     divPersonal.style.display = "block";
     divInputActividad.style.display = "none";
+
+    const textoHoraActual = document.getElementById("horaActual");
+    textoHoraActual.style.cssText = "font-size: 30px!important;";
+    const textoFechaActual = document.getElementById("fechaActual");
+    textoFechaActual.style.fontSize = "15px";
 }
 
 $(document).ready(function() {
