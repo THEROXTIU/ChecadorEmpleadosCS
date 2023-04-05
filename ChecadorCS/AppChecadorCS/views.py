@@ -1,10 +1,12 @@
 from django.shortcuts import render,redirect
 from datetime import datetime
-from appCS.models import Empleados, Proyectos, AsistenciaProyectoForaneo
+from appCS.models import Empleados, Proyectos, AsistenciaProyectoForaneo, HorasExtrasForaneas
 
 #Para mandar telegram
 import telepot
 from AppChecadorCS import keysBotAsistencia
+
+import holidays
 
 
 # Create your views here.
@@ -48,6 +50,10 @@ def login(request):
 
 def registro(request):
     if "sesionIniciada" in request.session:
+        
+            
+            
+            
         idEmpleado = request.session["sesionIniciada"]
         intIdEmpleado = int(idEmpleado)
         consultaEmpleado = Empleados.objects.filter(id_empleado = idEmpleado)
@@ -662,6 +668,24 @@ def agregarPersonalAAsistencia(request):
     
 def registrarSalida(request):
     if "sesionIniciada" in request.session:
+        #DIAS FERIADOS MEXICO
+        mx_holidays = holidays.Mexico(years=2023)
+        
+        arregloFechas = []
+        
+        for date, name in mx_holidays.items():
+            fechaFeriada = date.strftime('%Y-%m-%d')
+            arregloFechas.append(fechaFeriada)
+            
+            ''''01/01/2023: Año Nuevo
+            06/02/2023: Día de la Constitución
+            20/03/2023: Natalicio de Benito Juárez
+            01/05/2023: Día del Trabajo
+            16/09/2023: Día de la Independencia
+            20/11/2023: Día de la Revolución
+            25/12/2023: Navidad'''
+            
+            
         try:
             idEmpleadoPrincipal = request.session["sesionIniciada"]
             
@@ -678,7 +702,7 @@ def registrarSalida(request):
             consultaAsistenciaEmpleado = AsistenciaProyectoForaneo.objects.filter(id_empleado_id = idEmpleadoPrincipal, fecha_salida__isnull = True)
 
             for datoAsistencia in consultaAsistenciaEmpleado:
-                proyectoInterno = datoAsistencia.proyecto_interno    #O puede tener un id de proyecto o es None
+                proyectoInterno = datoAsistencia.proyecto_interno_id    #O puede tener un id de proyecto o es None
                 motivo = datoAsistencia.motivo   #O puede tener uun motivo o es ""
                 fechaEntrada = datoAsistencia.fecha_entrada
 
@@ -699,22 +723,169 @@ def registrarSalida(request):
                     
                     if proyectoInterno != None:
                         actualizacionSalida = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, fecha_salida__isnull = True, proyecto_interno_id = proyectoInterno, personal_externo = personalExterno).update(fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
+                        consultaEmpleadoAsistencia = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, proyecto_interno_id = proyectoInterno, personal_externo = personalExterno, fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
                     else: 
                         actualizacionSalida = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, motivo = motivo,fecha_salida__isnull = True, personal_externo = personalExterno).update(fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
+                        consultaEmpleadoAsistencia =  AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, motivo = motivo, personal_externo = personalExterno, fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
                 else:
                     
                     consultaEmpleado = Empleados.objects.filter(id_empleado = idEmpleado)
                     for datoEmpleado in consultaEmpleado:
                         nombreEmpleado = datoEmpleado.nombre + " "+datoEmpleado.apellidos
+                        idArea = datoEmpleado.id_area_id
+                        puestoEmpleado = datoEmpleado.puesto
+                        
                     listaEmpleadosTelegram.append(nombreEmpleado)
                         
                     if proyectoInterno != None:
                         actualizacionSalida = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, fecha_salida__isnull = True, proyecto_interno_id = proyectoInterno, id_empleado_id = idEmpleado).update(fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
+                        consultaEmpleadoAsistencia = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada,  proyecto_interno_id = proyectoInterno, id_empleado_id = idEmpleado, fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
                     else: 
                         actualizacionSalida = AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, motivo = motivo,fecha_salida__isnull = True, id_empleado_id = idEmpleado).update(fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
-            
-            #Todo bien!
-            request.session["salidaRegistradaCorrectamente"] = "Salida registrada correctamente!"
+                        consultaEmpleadoAsistencia =  AsistenciaProyectoForaneo.objects.filter(fecha_entrada = fechaEntrada, motivo = motivo, id_empleado_id = idEmpleado,fecha_salida = fechaAsistencia, hora_salida = horaSalida, actividades_realizadas = actividadesRealizadas)
+                    #Ya se actualizo!
+                    
+                    #-----------------------------------------------------------------------------------------
+                    #------------------ HORAS EXTRAS ---------------------------------------------------------
+                    #-----------------------------------------------------------------------------------------
+                    
+                    
+                    #Saber que tipo de horario tiene
+                    horarioAdministrativo = False   
+                    horarioOperativo = False
+
+                    if idArea == 9:
+                        if puestoEmpleado == "Jefatura de Soporte Técnico":
+                            horarioAdministrativo = True
+                        else:
+                            horarioOperativo = True
+                    else:
+                        horarioAdministrativo = True
+
+
+
+                    #SABER SI TIENE HORAS EXTRAS
+
+                    intHorasExtras = 0
+
+                    
+                    #Obtener primero el horario
+                    numeroDeDiaDeHoy = datetime.today().weekday()
+                    fechaAsistencia = datetime.today()
+                    
+                    #Si es de lunes a viernes..
+                    if numeroDeDiaDeHoy >= 1 and numeroDeDiaDeHoy <=5:
+                        if fechaAsistencia in arregloFechas:
+                            todasLasHorasSonExtras = True
+                        else:
+                            if horarioAdministrativo:
+                                #Horario de 8 a 5:30
+                                horaEntradaOficial = "8:00:00"
+                                horaSalidaOficial = "17:30:00"
+                                
+                            elif horarioOperativo:
+                                #Horario de 8 a 5
+                                horaEntradaOficial = "8:00:00"
+                                horaSalidaOficial = "17:00:00"
+                            
+                            todasLasHorasSonExtras = False
+                        
+                    #Si es sabado..
+                    elif numeroDeDiaDeHoy == 6:
+                        if fechaAsistencia in arregloFechas:
+                            todasLasHorasSonExtras = True
+                        else:
+                            if horarioAdministrativo:
+                                #Horario de 8 a 2
+                                horaEntradaOficial = "8:00:00"
+                                horaSalidaOficial = "14:00:00"
+                            elif horarioOperativo:
+                                #Horario de 8 a 1
+                                horaEntradaOficial = "8:00:00"
+                                horaSalidaOficial = "13:00:00"
+
+                            todasLasHorasSonExtras = False
+                        
+                    #Si es domingo..
+                    elif numeroDeDiaDeHoy == 7:
+                        #todo es hora extra
+                        todasLasHorasSonExtras = True
+                        
+                    
+                    #Consulta de esa asistencia del empleado
+                    idAsistenciaEmpleadoActualizadoDeSalida = 0
+                    
+                    if consultaEmpleadoAsistencia:
+                        for asistencia in consultaEmpleadoAsistencia:
+                            idAsistenciaEmpleadoActualizadoDeSalida = asistencia.id_asistencia_proyecto_foraneo
+                            horaEntrada = asistencia.hora_entrada
+                            horaSalida = asistencia.hora_salida
+                            
+                            
+                    
+                    #Si todas las horas son extras porque es domingo...
+                    if todasLasHorasSonExtras:
+                        #Tomar la hora de entrada y hora de salida, comparar la diferencia y hacer lo mismo para saber
+                        # los minutos de diferencia y saber las horas que son.
+
+                        horaEntradaConFormato = datetime.strptime(horaEntrada,"%H:%M:%S")
+                        horaSalidaConFormato = datetime.strptime(horaSalida,"%H:%M:%S")
+                        diferenciaDeTiempoEnMinutos = ((horaSalidaConFormato - horaEntradaConFormato).total_seconds()) / 60
+                        
+                        horasExtras = diferenciaDeTiempoEnMinutos / 60
+
+                        intHorasExtras = int(horasExtras) #Cantidad de horas extras
+
+                    else:
+                            
+                        
+                        #Calcular diferencia en minutos
+                        horaEntradaOficialConFormato = datetime.strptime(horaEntradaOficial, "%H:%M:%S") #Hora de entrada de custom
+                        horaSalidaOficialConFormato = datetime.strptime(horaSalidaOficial,"%H:%M:%S") #Hora de salida de custom
+                        
+                        
+                        horaEntradaEmpleadoFormato = datetime.strptime(horaEntrada,"%H:%M:%S") #Hora de entrada de empleado
+                        horaSalidaEmpleadoFormato = datetime.strptime(horaSalida,"%H:%M:%S") #Hora de salida de empoleado
+
+                        #HorasExtrasEntrada
+                        diferenciaDeTiempoEnMinutosEntrada = ((horaEntradaOficialConFormato - horaEntradaEmpleadoFormato).total_seconds()) / 60
+                        
+                        horasExtrasEntrada = diferenciaDeTiempoEnMinutosEntrada / 60
+                        
+
+                        #Horas extras salida
+                        diferenciaDeTiempoEnMinutosSalida = ((horaSalidaEmpleadoFormato - horaSalidaOficialConFormato).total_seconds()) / 60
+                        
+                        horasExtrasSalida = diferenciaDeTiempoEnMinutosSalida / 60
+                        
+
+                        if horasExtrasEntrada >=1:
+                            restante = horasExtrasEntrada % 1 # Obtiene la parte decimal del número
+
+                            if restante > 0.8:
+                                intHorasExtrasEntrada = round(horasExtrasEntrada) #Redondear las horas extras de la entrada
+                                intHorasExtrasEntrada = int(intHorasExtrasEntrada)
+                            else:
+                                intHorasExtrasEntrada = int(horasExtrasEntrada)
+                        else:
+                            intHorasExtrasEntrada = 0
+
+
+                        if horasExtrasSalida >=1:
+                            intHorasExtrasSalida = int(horasExtrasSalida)
+                        else:
+                            intHorasExtrasSalida = 0
+
+                        intHorasExtras = intHorasExtrasEntrada + intHorasExtrasSalida
+
+
+                        if intHorasExtras >= 1:
+                            idAsistenciaEmpleadoActualizadoDeSalida = int(idAsistenciaEmpleadoActualizadoDeSalida)
+                            registroHorasExtras = HorasExtrasForaneas(id_asitencia_foraneas = AsistenciaProyectoForaneo.objects.get(id_asistencia_proyecto_foraneo = idAsistenciaEmpleadoActualizadoDeSalida),
+                                                                        numero_horas_extras = intHorasExtras)
+                            registroHorasExtras.save()
+                
+           
             
             #NOTIFICAR POR TELEGRAM
             #Mandar notificación de telegram
@@ -737,9 +908,12 @@ def registrarSalida(request):
                             
                             
                 if proyectoInterno != None:
+                    print("PROYEEECTOOO "+str(proyectoInterno))
                     consultaProyecto = Proyectos.objects.filter(id_proyecto = proyectoInterno)
                     for datoProyecto in consultaProyecto:
                         nombreProyecto = datoProyecto.nombre_proyecto
+                    print("NOMBRE PROYECTOO "+nombreProyecto)
+                    
                         
                     mensaje = "\U0001F6A9 SALIDA REGISTRADA \U0001F6A9 \n Proyecto: "+nombreProyecto+" \U0001F4BC \n \n "+stringNombresEmpleados+"\n"+"Actividades realizadas: "+actividadesRealizadas
                 else:
@@ -748,12 +922,20 @@ def registrarSalida(request):
                 
                 botCustom.sendMessage(idGrupoTelegram,mensaje)
             except Exception as e:
-                print("An exception occurred", e)
+                print("An exception occurred en telegram salida", e)
+                
+            
+                
+                
+            
+            
+            #Todo bien!
+            request.session["salidaRegistradaCorrectamente"] = "Salida registrada correctamente!"
 
             return redirect("/registro/")
         except Exception as e:
             request.session["errorEnSalida"] = "Error en salida! Consultar a soporte!"
-            print("Ha ocurrido una excepción:", e)
+            print("Ha ocurrido una excepción en la salida :", e)
             return redirect("/registro/")
 
                 
