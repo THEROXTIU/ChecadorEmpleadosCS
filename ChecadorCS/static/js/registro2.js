@@ -266,6 +266,43 @@ function mostrarDivActuvidadesRealizadas(){
     divActividadesFinalesSalida.style.display = "block";
 }
 
+function clicBotonGuardarActividad(){
+    var input = document.getElementById("activiadReportada");
+    var boton = document.getElementById("botonAgregarActividad"); // Seleccionamos el boton de tipo submit
+
+    if (input.value !== "") {
+      boton.disabled = true; // Deshabilitamos el boton de submit
+      return true;  // Si el input no está deshabilitado y tiene un valor, envía el formulario
+      
+    }
+    return false;   // Si el input está deshabilitado o no tiene valor, no envía el formulario
+
+}
+
+function clicBotonAgregarPersonal(){
+    var input2 = document.getElementById("actividadRealizadaPersonal");
+    var botonPersonal = document.getElementById("botonAgregarPersonal"); // Seleccionamos el boton de tipo submit
+
+    if (input2.value !== "") {
+        botonPersonal.disabled = true; // Deshabilitamos el boton de submit
+        return true;  // Si el input no está deshabilitado y tiene un valor, envía el formulario
+      
+    }
+    return false;   // Si el input está deshabilitado o no tiene valor, no envía el formulario
+}
+
+function clicGuardarSalida(){
+    var input3 = document.getElementById("actividadesRealizadas");
+    var botonSalida = document.getElementById("botonSalida"); // Seleccionamos el boton de tipo submit
+
+    if (input3.value !== "") {
+        botonSalida.disabled = true; // Deshabilitamos el boton de submit
+        return true;  // Si el input no está deshabilitado y tiene un valor, envía el formulario
+      
+    }
+    return false;   // Si el input está deshabilitado o no tiene valor, no envía el formulario
+}
+
 $(document).ready(function() {
     $('#selectEmpleados').select2();
     tags: true;

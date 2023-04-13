@@ -307,8 +307,26 @@ function regresarADivPersonal(){
     textoFechaActual.style.fontSize = "15px";
 }
 
+function clicBotonGuardarEntrada(){
+    var input = document.getElementById("actividadARealizar");
+    var boton = document.querySelector("button[type='submit']"); // Seleccionamos el boton de tipo submit
+
+    if (input.value !== "") {
+      boton.disabled = true; // Deshabilitamos el boton de submit
+      console.log("hay algo en el input, envia el formulario")
+      return true;  // Si el input no está deshabilitado y tiene un valor, envía el formulario
+      
+    }
+    console.log("no hay nada en el input")
+    return false;   // Si el input está deshabilitado o no tiene valor, no envía el formulario
+
+}
+
 $(document).ready(function() {
     $('#selectEmpleados').select2();
     tags: true;
 
 });	
+
+
+

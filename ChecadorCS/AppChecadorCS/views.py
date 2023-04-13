@@ -52,7 +52,7 @@ def registro(request):
     if "sesionIniciada" in request.session:
         
             
-            
+        contadorAsistenciasDeHoy = 0
             
         idEmpleado = request.session["sesionIniciada"]
         intIdEmpleado = int(idEmpleado)
@@ -101,6 +101,7 @@ def registro(request):
         if consultaEntrada:
             empleadoTieneEntradaHoy = True #Si tiene una entrada
             for datosConsultaEntrada in consultaEntrada:
+                contadorAsistenciasDeHoy = contadorAsistenciasDeHoy + 1
                 
                 #DATOS PARA INTERFAZ FINAL..
                 fechaAsistenciaMostrar = datosConsultaEntrada.fecha_entrada
@@ -177,7 +178,7 @@ def registro(request):
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados,
                                                             "actividadAgregada":actividadAgregada, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                             "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto,"listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
-                                                            "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar})
+                                                            "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar, "contadorAsistenciasDeHoy":contadorAsistenciasDeHoy})
             
         
         
@@ -189,7 +190,7 @@ def registro(request):
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados,
                                                             "entradaRegistradaCorrectamente":entradaRegistradaCorrectamente, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                             "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto,"listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
-                                                            "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar})
+                                                            "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar, "contadorAsistenciasDeHoy":contadorAsistenciasDeHoy})
         
         #Si hay un error al registrar la entrada
         if "errorEnEntrada" in request.session:
@@ -199,7 +200,7 @@ def registro(request):
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados,
                                                             "errorEnEntrada":errorEnEntrada, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                             "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
-                                                            "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar})
+                                                            "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar, "contadorAsistenciasDeHoy":contadorAsistenciasDeHoy})
         #Si se añadieron los empleados correctamente
         if "empleadosAñadidosCorrectamente" in request.session:
             empleadosAñadidosCorrectamente = request.session["empleadosAñadidosCorrectamente"]
@@ -208,7 +209,7 @@ def registro(request):
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                         "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
                                                         "empleadosAñadidosCorrectamente":empleadosAñadidosCorrectamente,
-                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar})
+                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar, "contadorAsistenciasDeHoy":contadorAsistenciasDeHoy})
             
             
         #Si hay un error al añadir empleados
@@ -219,7 +220,7 @@ def registro(request):
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                         "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
                                                         "errorAñadirEmpleados":errorAñadirEmpleados,
-                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar})
+                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar, "contadorAsistenciasDeHoy":contadorAsistenciasDeHoy})
             
         if "salidaRegistradaCorrectamente" in request.session:
             salidaRegistradaCorrectamente = request.session["salidaRegistradaCorrectamente"]
@@ -228,7 +229,7 @@ def registro(request):
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                         "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
                                                         "salidaRegistradaCorrectamente":salidaRegistradaCorrectamente,
-                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar}) 
+                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar, "contadorAsistenciasDeHoy":contadorAsistenciasDeHoy}) 
            
         
         if "errorEnSalida" in request.session:
@@ -238,14 +239,14 @@ def registro(request):
             return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                         "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
                                                         "errorEnSalida":errorEnSalida,
-                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar})
+                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar, "contadorAsistenciasDeHoy":contadorAsistenciasDeHoy})
             
             
             
             
         return render(request,"registro/registro.html",{"nombresEmpleado":nombresEmpleado,"consultaProyectos":consultaProyectos,"listaEmpleados":listaEmpleados, "empleadoTieneEntradaHoy":empleadoTieneEntradaHoy,
                                                         "empleadoTieneSalidaHoy":empleadoTieneSalidaHoy, "horaEntrada":horaEntrada, "proyecto":proyecto, "listaEmpleadosConLaMismaAsistencia":listaEmpleadosConLaMismaAsistencia,
-                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar})
+                                                        "fechaAsistenciaMostrar":fechaAsistenciaMostrar, "horaAsistenciaMostrar":horaAsistenciaMostrar, "proyectoMotivoMostrar":proyectoMotivoMostrar, "actividadesRealizadas":actividadesRealizadas, "fechaSalidaMostrar":fechaSalidaMostrar, "horaSalidaMostrar":horaSalidaMostrar, "contadorAsistenciasDeHoy":contadorAsistenciasDeHoy})
         
     else:
         return redirect("/login/")
@@ -782,13 +783,15 @@ def registrarSalida(request):
                                 #Horario de 8 a 5:30
                                 horaEntradaOficial = "8:00:00"
                                 horaSalidaOficial = "17:30:00"
+                                todasLasHorasSonExtras = False
                                 
                             elif horarioOperativo:
                                 #Horario de 8 a 5
                                 horaEntradaOficial = "8:00:00"
                                 horaSalidaOficial = "17:00:00"
+                                todasLasHorasSonExtras = False
                             
-                            todasLasHorasSonExtras = False
+                            
                         
                     #Si es sabado..
                     elif numeroDeDiaDeHoy == 6:
@@ -799,12 +802,14 @@ def registrarSalida(request):
                                 #Horario de 8 a 2
                                 horaEntradaOficial = "8:00:00"
                                 horaSalidaOficial = "14:00:00"
+                                todasLasHorasSonExtras = False
                             elif horarioOperativo:
                                 #Horario de 8 a 1
                                 horaEntradaOficial = "8:00:00"
                                 horaSalidaOficial = "13:00:00"
+                                todasLasHorasSonExtras = False
 
-                            todasLasHorasSonExtras = False
+                            
                         
                     #Si es domingo..
                     elif numeroDeDiaDeHoy == 7:
