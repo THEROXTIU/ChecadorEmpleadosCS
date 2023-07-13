@@ -34,6 +34,7 @@ var divSpanNumeroPersonalExterno = document.getElementById("divSpanNumeroPersona
 var divDosBotonesPersonal = document.getElementById("divDosBotonesPersonal");
 var divSpanNombresPersonalExterno = document.getElementById("divSpanNombresPersonalExterno");
 var divInputActividad = document.getElementById("divInputActividad");
+var contenedorProyecto = document.getElementById("contenedorProyecto");
 
 var horasTrabajadas = document.getElementById("horasTrabajadas");
 
@@ -53,6 +54,7 @@ divSpanNombresPersonalExterno.style.display = "none";
 divInputActividad.style.display = "none";
 horasTrabajadas.style.display = "none";
 divBotonesHora.style.display = "none";
+contenedorProyecto.style.display ="none";
 
 function mostrarHoraActual() {
     const fecha = new Date();
@@ -85,13 +87,21 @@ function mostrarInputHoraManual(){
 
 function mostrarOpcionesHora(){
     divHoraManualnual.style.display = "none";
-    divBotonesHora.style.display="block";
+    divBotonesHora.style.display="none";
+    contenedorProyecto.style.display="none";
+    divProyectos.style.display="none";
+    interfazBotones.style.display="block";
+    
 }
 
 function mostrarDivProyecto(){
     divBotonesHora.style.display ="none";
     divHoraManualnual.style.display = "none";
+    interfazBotones.style.display="none";
     divProyectos.style.display ="block";
+    contenedorProyecto.style.display="block";
+    
+
 
 }
 
@@ -128,21 +138,21 @@ function mostrarDivPersonal(){
     textoFechaActual.style.fontSize = "15px";
 }
 
-function mostrarSelectEmpleados(){
-    var switchlabel2 = document.getElementById("switch-label2");
-    if(switchlabel2.checked){
-        divSelectEmpleado.style.display="block";
+//function mostrarSelectEmpleados(){
+    //var switchlabel2 = document.getElementById("switch-label2");
+    //if(switchlabel2.checked){
+        //divSelectEmpleado.style.display="block";
 
         
 
 
-    }
-    else{
-        divSelectEmpleado.style.display="none";
+    //}
+    //else{
+        //divSelectEmpleado.style.display="none";
         
-    }
-}
-
+    //}
+//}
+//
 function guardarEmpleados(){
     var stringEmpleadosAgregados = "";
 

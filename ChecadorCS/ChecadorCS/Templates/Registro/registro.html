@@ -42,7 +42,7 @@
             <span>
               
               
-              <button type="button" class="animate__animated animate__bounceInUp" id="botonEntrada" onclick="ocultarDivBotones()">Entrada</button>
+              <button type="button" class="animate__animated animate__bounceInUp" id="botonEntrada" onclick="mostrarDivProyecto()">Entrada</button>
               <br>
               <br>
               <img src={% static 'images/rayocustom.png' %} width="18"  alt="User" class="animate__animated animate__flip">
@@ -112,22 +112,15 @@
               <button  class="animate__animated animate__fadeIn botonesProyectos botonContinuar" type="button" onclick="mostrarDivPersonal()">Continuar</button>
               &nbsp;
               &nbsp;
-              <button  class="animate__animated animate__fadeIn botonesProyectos botonRegresar" type="button" onclick="ocultarProyectoMostrarOpcionesHora()" ><i class="fa-sharp fa-solid fa-arrow-left"></i> Regresar</button>
+              <button  class="animate__animated animate__fadeIn botonesProyectos botonRegresar" type="button" onclick="mostrarOpcionesHora()" ><i class="fa-sharp fa-solid fa-arrow-left"></i> Regresarr</button>
             </span>
           </div>
       <!---------- DIV PARA AGREGAR PERSONAL---------------------->
           <div id="divPersonal">
+            <br>
+            <br>
             <h3 class="animate__animated animate__fadeInDown">Asistencia de: {{nombresEmpleado}}</h3>
-            <span id="spanSwitchAgregarEmpleados" class="animate__animated animate__fadeInDown">¿Deseas agregar compañer@s?
-              <h3> 
-                NO
-                <div class="switch-button2" class="animate__animated animate__fadeInDown">
-                  <input type="checkbox" name="switchMasCompaneros" id="switch-label2" class="switch-button__checkbox2" onclick="mostrarSelectEmpleados()">
-                  <label for="switch-label2" class="switch-button__label2"></label>
-                </div>
-                SI
-              </h3>
-            </span>
+            
             <div id="divSelectEmpleado">
               <select id="selectEmpleados" class="animate__animated animate__fadeInDown" name="listaEmpleadosExtras" multiple="multiple">
                 {% for empleado in listaEmpleados %}
@@ -284,16 +277,7 @@
             <h3>Añadir Personal</h3>
             <br>
             <form action="/agregarPersonalAAsistencia/" method="POST"  onsubmit="return clicBotonAgregarPersonal()">{% csrf_token %}
-              <span id="spanSwitchAgregarEmpleados">¿Deseas agregar compañer@s?
-                <h3> 
-                  NO
-                  <div class="switch-button2">
-                    <input type="checkbox" name="switchMasCompaneros" id="switch-label2" class="switch-button__checkbox2" onclick="mostrarSelectEmpleados()">
-                    <label for="switch-label2" class="switch-button__label2"></label>
-                  </div>
-                  SI
-                </h3>
-              </span>
+              
               <div id="divSelectEmpleado">
                 <select id="selectEmpleados" name="listaEmpleadosExtras" multiple="multiple">
                   {% for empleado in listaEmpleados %}
