@@ -747,6 +747,7 @@ class AsistenciaProyectoForaneo(models.Model):
     hora_salida = models.CharField(max_length=8, null = True)
     proyecto_interno = models.ForeignKey(Proyectos, on_delete= CASCADE, null = True)
     motivo = models.CharField(max_length=255, null = True)
+    empresa = models.CharField(max_length=255, null = True)
     actividad_realizada = models.CharField(max_length=255, null = True)
     actividades_realizadas = models.CharField(max_length=255, null = True)
 

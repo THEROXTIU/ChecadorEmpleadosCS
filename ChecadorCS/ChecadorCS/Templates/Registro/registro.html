@@ -29,7 +29,9 @@
         <div class="form-container sign-in-container">
           <h1 class="animate__animated animate__slideInDown" id="horaActual"></h1>
           <br>
-          <h1 id="fechaActual"></h1>
+          <div id="divFechaActual">
+            <h1 id="fechaActual"></h1>
+          </div>
           <!-- DIV PARA REGISTRAR ENTRADA -->
           <div id="interfazBotones">
             <br>
@@ -94,6 +96,10 @@
               </select>
             </div>	
             <div id="divSinProyecto" class="animate__animated animate__fadeIn">
+              <h3>Empresa a Visitar:</h3>
+              <input type="text" placeholder="Escribir empresa" name="empresaProyectoInput"/>
+
+              
               <h3>Ingresar Motivo:</h3>
               
               <input type="text" placeholder="Escribir motivo" name="motivoProyectoInput"/>
@@ -101,7 +107,7 @@
             </div>
         
             <h3 class="animate__animated animate__fadeInDown"> 
-              Sin Proyecto 
+              Sin Proyecto
               <div class="switch-button">
                 <input type="checkbox" name="switchProyecto" id="switch-label" class="switch-button__checkbox" onclick="ocultarProyectos()">
                 <label for="switch-label" class="switch-button__label"></label>
@@ -112,7 +118,7 @@
               <button  class="animate__animated animate__fadeIn botonesProyectos botonContinuar" type="button" onclick="mostrarDivPersonal()">Continuar</button>
               &nbsp;
               &nbsp;
-              <button  class="animate__animated animate__fadeIn botonesProyectos botonRegresar" type="button" onclick="mostrarOpcionesHora()" ><i class="fa-sharp fa-solid fa-arrow-left"></i> Regresarr</button>
+              <button  class="animate__animated animate__fadeIn botonesProyectos botonRegresar" type="button" onclick="mostrarOpcionesHora()" ><i class="fa-sharp fa-solid fa-arrow-left"></i> Regresar</button>
             </span>
           </div>
       <!---------- DIV PARA AGREGAR PERSONAL---------------------->
@@ -240,13 +246,12 @@
               <button type="submit"  class="animate__animated animate__fadeIn botonesSiguientes" onclick="mostrarDivReportarActividad()">Reportar<br> Actividad</button>
               &nbsp;
               &nbsp;
-              <button type="submit"  class="animate__animated animate__fadeIn botonesSiguientes" id="botonAgregarPersonal" onclick="mostrarDivAgregarPersonalAAsistencia()">Agregar<br> personal</button>
+
+              <button type="submit"  class="animate__animated animate__fadeIn botonSalida" onclick="mostrarDivHorasSalida()">REPORTAR<br> SALIDA</button>
+              <!--<button type="submit"  class="animate__animated animate__fadeIn botonesSiguientes" id="botonAgregarPersonal" onclick="mostrarDivAgregarPersonalAAsistencia()">Agregar<br> personal</button>-->
             </span>
-            <br>
-            <br>
-            <span> 
-              <button type="submit"  class="animate__animated animate__fadeIn botonSalida" onclick="mostrarDivHorasSalida()">REPORTAR SALIDA</button>
-            </span>
+            
+           
           </div>
 
         <!-- DIV INGRESAR ACTIVIDAD -->
@@ -354,6 +359,8 @@
         <!-- DIV HORA SALIDA-->
         <form action="/registrarSalida/" method="POST" onsubmit="return clicGuardarSalida()">{% csrf_token %}
           <div id="divHorasSalida">
+
+            <!--
             <br><br>
             <div id="divBotonesHora">
               <h3>Elegir hora de entrada</h3>
@@ -383,7 +390,7 @@
             <textarea rows="5" cols="33" name="actividadesRealizadas" id="actividadesRealizadas" required></textarea>
             <br><br>
             <span> 
-              <button  class="animate__animated animate__fadeIn botonesProyectos botonRegresar" type="button" onclick="mostrarDivHorasSalida()" ><i class="fa-sharp fa-solid fa-arrow-left"></i> Regresar</button>
+              <button  class="animate__animated animate__fadeIn botonesProyectos botonRegresar" type="button" onclick="regresarDivSalida()" ><i class="fa-sharp fa-solid fa-arrow-left"></i> Regresar</button>
               <br><br>
               <button type="submit" id="botonSalida" class="animate__animated animate__fadeIn botonSalida2"><i class="fa-solid fa-floppy-disk"></i> Guardar salida</button>
             </span>
@@ -468,9 +475,12 @@
               </select>
             </div>	
             <div id="divSinProyecto" class="animate__animated animate__fadeIn">
+              
               <h3>Ingresar Motivo:</h3>
               
               <input type="text" placeholder="Escribir motivo" name="motivoProyectoInput"/>
+
+              <h3></h3>
 
             </div>
         
@@ -580,6 +590,7 @@
           <div id="divInputActividad">
             <h3 class="animate__animated animate__fadeInDown">Actividad a Realizar:</h3>
             <input type="text" name="actividadARealizar" id="actividadARealizar" class="animate__animated animate__fadeInDown" placeholder="Ingresar Actividad" required maxlength="255">
+
             <br><br>
             <center>
               <span> 

@@ -245,8 +245,18 @@ function mostrarDivHorasSalida(){
     interfazBotones.style.display = "none";
     divActividadesFinalesSalida.style.display = "none";
     divHorasSalida.style.display = "block";
-}
+    divActividadesFinalesSalida.style.display = "block";
 
+    const textoHoraActual = document.getElementById("horaActual");
+    textoHoraActual.style.cssText = "font-size: 30px!important;";
+    const textoFechaActual = document.getElementById("fechaActual");
+    textoFechaActual.style.fontSize = "15px";
+}
+function regresarDivSalida(){
+    console.log("REGRESAR");
+    interfazBotones.style.display = "none";
+    
+}
 function mostrarInputHoraManual(){
     var divBotonesHora = document.getElementById("divBotonesHora");
     divBotonesHora.style.display="none";

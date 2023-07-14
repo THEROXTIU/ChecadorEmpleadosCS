@@ -41,6 +41,7 @@ var horasTrabajadas = document.getElementById("horasTrabajadas");
 
 
 fechaActual.innerHTML = fechaHoy;
+fechaActual.style.display="block";
 divHoraManualnual.style.display="none";
 divProyectos.style.display="none";
 divSinProyecto.style.display="none";
@@ -55,6 +56,7 @@ divInputActividad.style.display = "none";
 horasTrabajadas.style.display = "none";
 divBotonesHora.style.display = "none";
 contenedorProyecto.style.display ="none";
+
 
 function mostrarHoraActual() {
     const fecha = new Date();
@@ -115,10 +117,22 @@ function ocultarProyectos(){
         contenedorProyecto.style.display ="none";
         divSinProyecto.style.display="block";
 
+        const textoHoraActual = document.getElementById("horaActual");
+        textoHoraActual.style.cssText = "font-size: 30px!important;";
+        const textoFechaActual = document.getElementById("fechaActual");
+        textoFechaActual.style.fontSize = "15px";
+        
+
     }
     else{
-        contenedorProyecto.style.display ="block";
+        console.log("asdf");
         divSinProyecto.style.display="none";
+        contenedorProyecto.style.display ="block";
+
+        const textoHoraActual = document.getElementById("horaActual");
+        textoHoraActual.style.cssText = "font-size: 60px!important;";
+        const textoFechaActual = document.getElementById("fechaActual");
+        textoFechaActual.style.fontSize = "30px";
         
     }
 }
